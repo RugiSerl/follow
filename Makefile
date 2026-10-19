@@ -12,7 +12,7 @@ OBJ_MAIN=$(OBJ) $(BUILD_DIR)/main.o
 SRC_TEST=$(call wildcard, $(TEST_DIR)/*.c)
 OBJ_TEST=$(patsubst $(TEST_DIR)/%, $(BUILD_DIR)/%, $(SRC_TEST:.c=.o))
 CFLAGS = -Wall -Iexternal/unity/src -I$(INCLUDE_DIR)
-LFLAGS = -lncurses
+LFLAGS =
 
 run: $(TARGET)
 	$(TARGET)
