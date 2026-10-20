@@ -7,11 +7,12 @@ s_node * list_create(){
 }
 
 void *list_get_data(s_node * node){
-    return node->data;
+    if (node == NULL) return NULL;
+    else return node->data;
 }
 
 void list_set_data(s_node * node, void * data){
-    node->data = data;
+    if (node != NULL) node->data = data;
 }
 
 s_node * list_insert(s_node * head, void * data){

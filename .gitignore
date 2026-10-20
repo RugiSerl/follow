@@ -1,3 +1,4 @@
 bin
 .cache
 compile_commands.json
+test_output.txt
