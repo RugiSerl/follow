@@ -1,4 +1,5 @@
 #include "list.h"
+#include "stddef.h"
 
 s_node * list_create(){
     s_node * liste = NULL;
