@@ -1,6 +1,7 @@
 #include "list.h"
 #include "unity.h"
 #include "unity_internals.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -194,6 +195,26 @@ void list_append_test() {
     free(list);
 }
 
+int compare_int_basic(s_node* s, void* data) {
+    assert(s != NULL && s->data != NULL && data != NULL);
+    return *(int *)(s->data) - *(int *)data;
+}
+
+void list_orderedAppend_test() {
+    s_node* list = list_create();
+    int i=10, j=40, k=20;
+    TEST_ASSERT_EQUAL_PTR(NULL, list);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
+    list_orderedAppend(&list, compare_int_basic, &i);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "10 -> null"));
+    list_orderedAppend(&list, compare_int_basic, &j);
+    // TODO : erreur ici !!
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "40 -> 10 -> null"));
+    
+    free(list->next);
+    free(list);
+}
+
 void list_general_test(){
     int i=1, j=2;
     s_node * l=list_create();
@@ -212,5 +233,6 @@ void list_test() {
     RUN_TEST(list_get_data_test);
     RUN_TEST(list_set_data_test);
     RUN_TEST(list_append_test);
+    RUN_TEST(list_orderedAppend_test);
     RUN_TEST(list_general_test);
 }
