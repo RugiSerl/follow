@@ -36,3 +36,28 @@ s_node * list_insert(s_node * head, void * data);
  * Si l'allocation a échoué, alors cette valeur vaut le pointeur NULL.
  */
 s_node * list_append(s_node * head, void * data);
+
+/**
+* ajout d’un noeud dans une liste ordonnee
+* selon le resulat de ” compare ” ;
+* si la donner existe deja , elle n’est pas ajoutee 
+*/
+s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void *param);
+
+/**
+* suppression de la premiere instance d’une
+* donnee dans la liste , retourne la tete de liste
+*/
+s_node * list_remove(s_node * head, vois * data);
+
+/**
+suppression de la tete de liste
+// retourne la nouvelle tete de liste
+ */
+s_node * listheadRemove(s_node * head);
+
+/**
+* destruction d’une liste
+* (La liberationdes donnees n’est pas prise en charge)
+*/
+void list_destroy(s_node * head);
