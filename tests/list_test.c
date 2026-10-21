@@ -111,27 +111,27 @@ int check_list_state(s_node * head,  int (*node_to_string)(s_node * node, char *
 void list_create_test() {
     s_node* list = list_create();
     TEST_ASSERT_EQUAL_PTR(NULL, list);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "null"));
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
 
 }
 
 void list_insert_test() {
     s_node* list = list_create();
     TEST_ASSERT_EQUAL_PTR(NULL, list);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "null"));
-    double data = 5.0;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
+    int data = 5;
     list = list_insert(list, &data);
     TEST_ASSERT_NOT_EQUAL_PTR(NULL, list);
     TEST_ASSERT_EQUAL_PTR(NULL, list->next);
     TEST_ASSERT_EQUAL_PTR(&data, list->data);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "5 -> null"));
-    double data2 = 10.0;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "5 -> null"));
+    int data2 = 10;
     list = list_insert(list, &data2);
     TEST_ASSERT_NOT_EQUAL_PTR(NULL, list);
     TEST_ASSERT_NOT_EQUAL_PTR(NULL, list->next);
     TEST_ASSERT_EQUAL_PTR(NULL, list->next->next);
     TEST_ASSERT_EQUAL_PTR(&data2, list->data);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "10 -> 5 -> null"));
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "10 -> 5 -> null"));
     free(list->next);
     free(list);
 }
@@ -140,16 +140,16 @@ void list_get_data_test() {
     s_node* list = list_create();
     TEST_ASSERT_EQUAL_PTR(NULL, list);
     TEST_ASSERT_EQUAL_PTR(NULL, list_get_data(list));
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "null"));
-    double data = 5.0;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
+    int data = 5;
     list = list_insert(list, &data);
     TEST_ASSERT_EQUAL_PTR(&data, list_get_data(list));
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "5 -> null"));
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "5 -> null"));
 
-    double data2 = 40.0;
+    int data2 = 40;
     list = list_insert(list, &data2);
     TEST_ASSERT_EQUAL_PTR(&data2, list_get_data(list));
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "40 -> 5 -> null"));
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "40 -> 5 -> null"));
 
     free(list->next);
     free(list);
@@ -158,35 +158,35 @@ void list_get_data_test() {
 void list_set_data_test() {
     s_node* list = list_create();
     TEST_ASSERT_EQUAL_PTR(NULL, list);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "null"));
-    double data = 5.0;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
+    int data = 5;
     list_set_data(list, &data);
     TEST_ASSERT_EQUAL_PTR(NULL, list);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "null"));
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
     list = list_insert(list, &data);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "5 -> null"));
-    double data2 = 7.0;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "5 -> null"));
+    int data2 = 7;
     list_set_data(list, &data2);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "7 -> null"));
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "7 -> null"));
     free(list);
 }
 
 void list_append_test() {
     s_node* list = list_create();
     TEST_ASSERT_EQUAL_PTR(NULL, list);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "null"));
-    double data = 20;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
+    int data = 20;
     list = list_append(list, &data);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "20 -> null"));
-    double data2 = 60;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "20 -> null"));
+    int data2 = 60;
     list = list_append(list, &data2);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "20 -> 60 -> null"));
-    double data3 = 10;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "20 -> 60 -> null"));
+    int data3 = 10;
     list = list_insert(list, &data3);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "10 -> 20 -> 60 -> null"));
-    double data4 = 80;
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "10 -> 20 -> 60 -> null"));
+    int data4 = 80;
     list = list_append(list, &data4);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_double_to_string, "10 -> 20 -> 60 -> 80 -> null"));
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "10 -> 20 -> 60 -> 80 -> null"));
 
     free(list->next->next->next);
     free(list->next->next);
