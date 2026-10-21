@@ -93,4 +93,5 @@ s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void 
         c->next = list_insert(c->next, param);
     }
     return c->next;
+
 }
