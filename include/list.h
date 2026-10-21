@@ -48,7 +48,7 @@ s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void 
 * suppression de la premiere instance d’une
 * donnee dans la liste , retourne la tete de liste
 */
-s_node * list_remove(s_node * head, vois * data);
+s_node * list_remove(s_node * head, void * data);
 
 /**
 suppression de la tete de liste
