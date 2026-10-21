@@ -210,7 +210,7 @@ void list_orderedAppend_test() {
     list_orderedAppend(&list, compare_int_basic, &j);
     // TODO : erreur ici !!
     TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "40 -> 10 -> null"));
-    
+
     free(list->next);
     free(list);
 }
@@ -220,9 +220,7 @@ void list_general_test(){
     s_node * l=list_create();
     l=list_insert(l,&i);
     l=list_insert(l,&j);
-    printf("%s",list_to_string(l,node_int_to_string));
     TEST_ASSERT_EQUAL_INT(1,check_list_state(l,&node_int_to_string,"2 -> 1 -> null"));
-    printf("\n");
     free(l->next);
     free(l);
 }
