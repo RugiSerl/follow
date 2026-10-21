@@ -68,16 +68,16 @@ s_node * listheadRemove(s_node * head){
 }
 
 void list_destroy(s_node * head){
-    while(head!=NULL){ // boucle qui supprime toutes le tetes 
+    while(head!=NULL){ // boucle qui supprime toutes le tetes
         head = listheadRemove(head);
-    } 
+    }
 }
 
 s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void *param) {
     if (*head == NULL) { // Cas où la liste est vide
         *head = list_insert(NULL, param);
         return *head;
-    } else if (compare(*head, param) < 0) { // Cas où on insère au début de la liste.
+    } else if (compare(*head, param) > 0) { // Cas où on insère au début de la liste.
         *head = list_insert(*head, param);
         return *head;
     }
@@ -88,8 +88,8 @@ s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void 
     // On avance tant qu'on n'arrive pas à la fin et qu'on est inférieur à param...
     while (c->next != NULL && compare(c->next, param) < 0) c = c->next;
 
-    if (c->next == NULL // Cas où on est arrivé à la fin de la liste
-    || compare(c->next, param) != 0) { // Cas où on rajoute un élément à l'intérieur de la liste
+    if (c->next == NULL                 // Cas où on est arrivé à la fin de la liste
+    || compare(c->next, param) != 0) {  // Cas où on rajoute un élément à l'intérieur de la liste
         // On ajoute entre c et c->next.
         c->next = list_insert(c->next, param);
     }

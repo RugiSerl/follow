@@ -202,15 +202,33 @@ int compare_int_basic(s_node* s, void* data) {
 
 void list_orderedAppend_test() {
     s_node* list = list_create();
-    int i=10, j=40, k=20;
+    int i=10, j=40, k=20, l=5, m=80;
     TEST_ASSERT_EQUAL_PTR(NULL, list);
     TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
-    list_orderedAppend(&list, compare_int_basic, &i);
+    s_node* added = list_orderedAppend(&list, compare_int_basic, &i);
     TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "10 -> null"));
-    list_orderedAppend(&list, compare_int_basic, &j);
-    // TODO : erreur ici !!
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "40 -> 10 -> null"));
+    TEST_ASSERT_EQUAL_PTR(list, added);
+    added = list_orderedAppend(&list, compare_int_basic, &j);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "10 -> 40 -> null"));
+    TEST_ASSERT_NOT_EQUAL_PTR(list, added);
+    TEST_ASSERT_EQUAL_PTR(list->next, added);
+    added = list_orderedAppend(&list, compare_int_basic, &j);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "10 -> 40 -> null"));
+    TEST_ASSERT_NOT_EQUAL_PTR(list, added);
+    TEST_ASSERT_EQUAL_PTR(list->next, added);
+    added = list_orderedAppend(&list, compare_int_basic, &k);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "10 -> 20 -> 40 -> null"));
+    TEST_ASSERT_EQUAL_PTR(list->next, added);
+    added = list_orderedAppend(&list, compare_int_basic, &l);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "5 -> 10 -> 20 -> 40 -> null"));
+    TEST_ASSERT_EQUAL_PTR(list, added);
+    added = list_orderedAppend(&list, compare_int_basic, &m);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "5 -> 10 -> 20 -> 40 -> 80 -> null"));
+    TEST_ASSERT_EQUAL_PTR(list->next->next->next->next, added);
 
+    free(list->next->next->next->next);
+    free(list->next->next->next);
+    free(list->next->next);
     free(list->next);
     free(list);
 }
