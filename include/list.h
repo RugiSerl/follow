@@ -24,6 +24,11 @@ void *list_get_data(s_node * node);
 void list_set_data(s_node * node, void * data);
 
 /**
+ * renvoie le noeud suivant
+ */
+s_node * list_next(s_node * node);
+
+/**
  * Ajoute un élément en tête de liste.
  * Renvoie le nouveau chainon qui correspond à la nouvelle tête de liste
  * Si l'allocation a échoué, alors cette valeur vaut le pointeur NULL.
