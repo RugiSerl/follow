@@ -58,7 +58,7 @@ s_node * list_remove(s_node * head, void * data);
  * Suppression de la tête de la liste.
  * Renvoie le chainon qui correspond à la nouvelle tête de liste.
  */
-s_node * listheadRemove(s_node * head);
+s_node * list_headRemove(s_node * head);
 
 /**
  * Suppression de tous les éléments d’une liste.
