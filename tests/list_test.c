@@ -195,7 +195,7 @@ void list_append_test() {
 }
 
 void general_test(){
-    int i=1, j=2,ok;
+    int i=1, j=2;
     s_node * l=list_create();
     l=list_insert(l,&i);
     l=list_insert(l,&j);
