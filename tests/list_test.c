@@ -194,10 +194,23 @@ void list_append_test() {
     free(list);
 }
 
+void general_test(){
+    int i=1, j=2,ok;
+    s_node * l=list_create();
+    l=list_insert(l,&i);
+    l=list_insert(l,&j);
+    printf("%s",list_to_string(l,node_int_to_string));
+    TEST_ASSERT_EQUAL_INT(1,check_list_state(l,&node_int_to_string,"2 -> 1 -> null"));
+    printf("\n");
+    free(l->next);
+    free(l);
+}
+
 void list_test() {
     RUN_TEST(list_create_test);
     RUN_TEST(list_insert_test);
     RUN_TEST(list_get_data_test);
     RUN_TEST(list_set_data_test);
     RUN_TEST(list_append_test);
+    RUN_TEST(general_test);
 }

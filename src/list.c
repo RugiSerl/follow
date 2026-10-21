@@ -62,16 +62,17 @@ s_node * list_remove(s_node * head, void * data){
 }
 
 s_node * listheadRemove(s_node * head){
-    s_node * new_head=head->next;
+    s_node * new_head=head->next; // sauvegarde temporairement la tete
     free(head);
     return new_head;
 }
 
 void list_destroy(s_node * head){
-    while(head!=NULL){
+    while(head!=NULL){ // boucle qui supprime toutes le tetes 
         head = listheadRemove(head);
-    }
+    } 
 }
+
 s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void *param) {
     if (*head == NULL) { // Cas où la liste est vide
         *head = list_insert(NULL, param);
