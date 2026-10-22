@@ -62,14 +62,17 @@ s_node * list_remove(s_node * head, void * data){
 }
 
 s_node * list_headRemove(s_node * head){
+    if(head==NULL)return NULL;
     s_node * new_head=head->next; // sauvegarde temporairement la tête
     free(head);
     return new_head;
 }
 
-void list_destroy(s_node * head){
-    while(head){ // boucle qui supprime toutes les têtes
-        head = list_headRemove(head);
+void list_destroy(s_node *head) {
+    while (head != NULL) {
+        s_node *next = head->next;
+        free(head);
+        head = next;
     }
 }
 

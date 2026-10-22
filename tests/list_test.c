@@ -250,6 +250,10 @@ void list_remove_test() {
     list = list_remove(list,&data2);
     TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "20 -> 60 -> null"));
 
+    list = list_insert(list, &data2);
+    list = list_remove(list,&data3);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "20 -> 40 -> null"));
+
     free(list->next);
     free(list);
 
@@ -273,10 +277,35 @@ void list_headRemove_test() {
     list = list_headRemove(list);
     TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "60 -> null"));
 
-    free(list);
+    list = list_headRemove(list);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
 
 
 }
+
+void list_destroy_test() {
+    s_node* list = list_create();
+    TEST_ASSERT_EQUAL_PTR(NULL, list);
+    list_destroy(list);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
+
+    int data = 20, data2 = 40, data3 = 60;
+    s_node* list2 = list_create();
+    list2 = list_insert(list2, &data);
+    list_destroy(list2);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list2, node_int_to_string, "null"));
+
+    s_node* list3 = list_create();
+    list3 = list_insert(list3, &data);
+    list3 = list_append(list3, &data2);
+    list3 = list_append(list3, &data3);
+    list_destroy(list3);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list3, node_int_to_string, "null"));
+
+
+}
+
+
 
 void list_general_test(){
     int i=1, j=2;
@@ -297,5 +326,5 @@ void list_test() {
     RUN_TEST(list_orderedAppend_test);
     RUN_TEST(list_headRemove_test);
     RUN_TEST(list_general_test);
-    RUN_TEST(list_remove_test);
+    RUN_TEST(list_destroy_test);
 }
