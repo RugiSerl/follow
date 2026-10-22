@@ -52,7 +52,7 @@ s_node * list_remove(s_node * head, void * data){
     if(head->data==data)return head->next;
     s_node * suivant = head->next; // On commence par le 2e élément.
     // Boucle pour aller jusqu'à la queue ou jusqu'à la première instance de data.
-    while(suivant->next!=NULL || suivant->data==data){
+    while(suivant->next!=NULL || suivant->data!=data){
         suivant=suivant->next;
     }
     if (suivant->next==NULL)return head;

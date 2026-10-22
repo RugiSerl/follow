@@ -250,7 +250,6 @@ void list_remove_test() {
     list = list_remove(list,&data2);
     TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "20 -> 60 -> null"));
 
-    free(list->next->next);
     free(list->next);
     free(list);
 
