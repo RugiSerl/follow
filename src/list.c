@@ -68,10 +68,8 @@ s_node * list_headRemove(s_node * head){
 }
 
 void list_destroy(s_node *head) {
-    while (head != NULL) {
-        s_node *next = head->next;
-        free(head);
-        head = next;
+    while (head) {
+        head = list_headRemove(head);
     }
 }
 

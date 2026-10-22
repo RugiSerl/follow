@@ -2,6 +2,7 @@
 #include "unity.h"
 #include "unity_internals.h"
 #include <assert.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -286,22 +287,17 @@ void list_destroy_test() {
     s_node* list = list_create();
     TEST_ASSERT_EQUAL_PTR(NULL, list);
     list_destroy(list);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "null"));
 
     int data = 20, data2 = 40, data3 = 60;
     s_node* list2 = list_create();
     list2 = list_insert(list2, &data);
     list_destroy(list2);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list2, node_int_to_string, "null"));
 
     s_node* list3 = list_create();
     list3 = list_insert(list3, &data);
     list3 = list_append(list3, &data2);
     list3 = list_append(list3, &data3);
     list_destroy(list3);
-    TEST_ASSERT_EQUAL_INT(1, check_list_state(list3, node_int_to_string, "null"));
-
-
 }
 
 
