@@ -247,6 +247,7 @@ void list_remove_test() {
     TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "40 -> 60 -> null"));
 
     list = list_insert(list, &data);
+    TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "20 -> 40 -> 60 -> null"));
     list = list_remove(list,&data2);
     TEST_ASSERT_EQUAL_INT(1, check_list_state(list, node_int_to_string, "20 -> 60 -> null"));
 
@@ -256,8 +257,6 @@ void list_remove_test() {
 
     free(list->next);
     free(list);
-
-
 }
 
 

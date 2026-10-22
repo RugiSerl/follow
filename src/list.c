@@ -1,5 +1,6 @@
 #include "list.h"
 #include "stddef.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -48,17 +49,15 @@ s_node * list_append(s_node * head, void * data){
 
 
 s_node * list_remove(s_node * head, void * data){
-    if(head==NULL)return NULL;
-    if(head->data==data)return head->next;
-    s_node * suivant = head->next; // On commence par le 2e élément.
-    // Boucle pour aller jusqu'à la queue ou jusqu'à la première instance de data.
-    while(suivant->next!=NULL || suivant->data!=data){
-        suivant=suivant->next;
+    if (head == NULL) return NULL;
+    else if (head->data == data || head->next == NULL) return list_headRemove(head);
+    else if (head->next->data == data) {
+        head->next = list_headRemove(head->next);
+        return head;
+    } else { // Cas récursif.
+        list_remove(head->next, data);
+        return head;
     }
-    if (suivant->next==NULL)return head;
-    free(suivant->next);
-    suivant->next=(suivant->next)->next;
-    return head;
 }
 
 s_node * list_headRemove(s_node * head){
