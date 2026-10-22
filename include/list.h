@@ -8,6 +8,7 @@ struct _list_node{
 
 /**
  * Crée une liste vide, correspondant au pointeur NULL.
+ * Renvoie la liste vide (=NULL)
  */
 s_node * list_create();
 
@@ -24,7 +25,7 @@ void *list_get_data(s_node * node);
 void list_set_data(s_node * node, void * data);
 
 /**
- * renvoie le noeud suivant
+ * Renvoie le noeud suivant node donné en paramètre.
  */
 s_node * list_next(s_node * node);
 
@@ -43,8 +44,14 @@ s_node * list_insert(s_node * head, void * data);
 s_node * list_append(s_node * head, void * data);
 
 /**
- * Ajout d’un noeud dans une liste ordonnee selon le resulat de "compare".
+ * Ajout d’un noeud dans une liste ordonnée selon le résulat de "compare".
  * Si la donnée existe déjà, elle n’est pas ajoutée.
+ * - head est un pointeur vers la tête (qui est un pointeur de s_node),
+ *   et a vocation à être modifié pour devenir la nouvelle tête.
+ * - compare permet de comparer un chainon avec une valeur.
+ * - param correspond à la valeur qu'on souhaite ajouter.
+ * La valeur renvoyée correspond au chainon qui a été ajouté (si il existait déjà,
+ * alors on renvoie l'instance existante)
  */
 s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void *param);
 
