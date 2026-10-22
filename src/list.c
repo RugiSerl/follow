@@ -93,6 +93,8 @@ s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void 
         // On ajoute entre c et c->next.
         c->next = list_insert(c->next, param);
     }
+    // Remarque : dans le cas où l'élément existait déjà dans la liste, c->next correspond déjà à
+    // l'élément donc on n'a rien à créer.
     return c->next;
 
 }
