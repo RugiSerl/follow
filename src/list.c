@@ -18,7 +18,7 @@ void list_set_data(s_node * node, void * data){
 }
 
 
-s_node * liste_next(s_node * node){
+s_node * list_next(s_node * node){
     return node->next;
 }
 
