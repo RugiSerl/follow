@@ -18,16 +18,3 @@ jobs:
 
       - name: unit test
         run: make test
-
-      - name: Display test results
-        if: always()
-        run: |
-          SUMMARY=$(grep -E "[0-9]+ Tests [0-9]+ Failures" test_output.txt | tail -n 1)
-          if [ -n "$SUMMARY" ]; then
-            TOTAL=$(echo $SUMMARY | awk '{print $1}')
-            FAILURES=$(echo $SUMMARY | awk '{print $3}')
-            PASSED=$((TOTAL - FAILURES))
-
-            echo "### 📊 Test results" >> $GITHUB_STEP_SUMMARY
-            echo "**Results :** $PASSED/$TOTAL passed tests" >> $GITHUB_STEP_SUMMARY
-          fi
