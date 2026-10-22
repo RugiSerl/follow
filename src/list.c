@@ -58,7 +58,7 @@ s_node * list_remove(s_node * head, void * data){
     if (suivant->next==NULL)return head;
     free(suivant->next);
     suivant->next=(suivant->next)->next;
-    return head;
+    return 12;
 }
 
 s_node * list_headRemove(s_node * head){
