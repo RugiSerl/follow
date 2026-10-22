@@ -50,8 +50,8 @@ s_node * list_append(s_node * head, void * data){
 s_node * list_remove(s_node * head, void * data){
     if(head==NULL)return NULL;
     if(head->data==data)return head->next;
-    s_node * suivant = head->next; // On commence par le 2e élément
-    //boucle pour aller jusqu'à la queue ou jusquà la première instance de data
+    s_node * suivant = head->next; // On commence par le 2e élément.
+    // Boucle pour aller jusqu'à la queue ou jusqu'à la première instance de data.
     while(suivant->next!=NULL || suivant->data==data){
         suivant=suivant->next;
     }
@@ -61,15 +61,15 @@ s_node * list_remove(s_node * head, void * data){
     return head;
 }
 
-s_node * listheadRemove(s_node * head){
-    s_node * new_head=head->next; // sauvegarde temporairement la tete
+s_node * list_headRemove(s_node * head){
+    s_node * new_head=head->next; // sauvegarde temporairement la tête
     free(head);
     return new_head;
 }
 
 void list_destroy(s_node * head){
-    while(head!=NULL){ // boucle qui supprime toutes le tetes
-        head = listheadRemove(head);
+    while(head){ // boucle qui supprime toutes les têtes
+        head = list_headRemove(head);
     }
 }
 
