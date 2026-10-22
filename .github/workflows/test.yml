@@ -17,9 +17,7 @@ jobs:
           submodules: recursive
 
       - name: unit test
-        run: |
-          set -o pipefail
-          make test
+        run: make test
 
       - name: Display test results
         if: always()

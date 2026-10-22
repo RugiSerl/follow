@@ -39,7 +39,7 @@ $(TARGET_TEST): $(OBJ) $(OBJ_TEST) $(BUILD_DIR)/unity.o
 	gcc $(OBJ_TEST) $(OBJ) $(BUILD_DIR)/unity.o -o $(TARGET_TEST) $(LFLAGS)
 
 test: $(TARGET_TEST)
-	./$(TARGET_TEST) | tee test_output.txt
+	@set -o pipefail; ./$(TARGET_TEST) | tee test_output.txt
 
 clean:
 	rm -rf $(BUILD_DIR)
