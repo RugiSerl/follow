@@ -1,4 +1,4 @@
-#include "hashtable.h"
+#include "strhash.h"
 #include "unity.h"
 #include "unity_internals.h"
 #include <stdio.h>
@@ -14,6 +14,6 @@ void hash_key_test() {
     TEST_ASSERT_EQUAL_INT(1200507617, hash2);
 }
 
-void hashtable_test() {
+void strhash_test() {
     RUN_TEST(hash_key_test);
 }

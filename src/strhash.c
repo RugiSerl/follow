@@ -1,4 +1,4 @@
-#include "hashtable.h"
+#include "strhash.h"
 
 int _hash_key(char* str) {
     int key = 0;
