@@ -18,7 +18,7 @@ int _hash_key(char* str);
 strhash* strhash_create(int size);
 
 /**
- * Libère une table de hachage.
+ * Libère/détruit une table de hachage.
  */
 void strhash_free(strhash* hashtable);
 

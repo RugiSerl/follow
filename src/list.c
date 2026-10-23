@@ -49,12 +49,13 @@ s_node * list_append(s_node * head, void * data){
 
 
 s_node * list_remove(s_node * head, void * data){
-    if (head == NULL) return NULL;
-    else if (head->data == data || head->next == NULL) return list_headRemove(head);
-    else if (head->next->data == data) {
-        head->next = list_headRemove(head->next);
+    if (head == NULL) return NULL;                              // Cas liste vide
+    else if (head->data == data) return list_headRemove(head);  // Cas où la liste commence par l'élément contenant data.
+    else if (head->next == NULL) return head;                   // Cas où on arrive à la fin de la liste
+    else if (head->next->data == data) {                        // Cas où on a trouvé l'élément dans la liste
+        head->next = list_headRemove(head->next);               // On supprime l'élément et on raccorde les chainons autour.
         return head;
-    } else { // Cas récursif.
+    } else {                                                    // Cas récursif, on propage la suppression en queue de liste.
         list_remove(head->next, data);
         return head;
     }
