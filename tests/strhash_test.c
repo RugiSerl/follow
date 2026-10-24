@@ -2,6 +2,7 @@
 #include "unity.h"
 #include "unity_internals.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 
 void hash_key_test() {
@@ -14,6 +15,17 @@ void hash_key_test() {
     TEST_ASSERT_EQUAL_INT(1200507617, hash2);
 }
 
+void strhash_create_free_test() {
+    strhash* s = strhash_create(10);
+    TEST_ASSERT_EQUAL_INT(10, s->size);
+    free(s->entries);
+    free(s);
+    s = strhash_create(50);
+    TEST_ASSERT_EQUAL_INT(50, s->size);
+    strhash_free(s);
+}
+
 void strhash_test() {
     RUN_TEST(hash_key_test);
+    RUN_TEST(strhash_create_free_test);
 }

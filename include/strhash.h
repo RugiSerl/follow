@@ -1,9 +1,10 @@
 #pragma once
 #include "list.h"
+#include <stddef.h>
 
 typedef struct {
     s_node** entries;
-    int size;
+    size_t size;
 } strhash;
 
 /**
@@ -15,7 +16,7 @@ int _hash_key(char* str);
  * Crée une nouvelle table de hashage vide.
  * Si l'allocation a échoué, alors NULL est renvoyé.
  */
-strhash* strhash_create(int size);
+strhash* strhash_create(unsigned int size);
 
 /**
  * Libère/détruit une table de hachage.
