@@ -1,5 +1,6 @@
 #include "strhash.h"
 #include "list.h"
+#include <math.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -64,4 +65,25 @@ int strhash_remove(strhash* hashtable, char* value){
         }
     }
     return 0;
+}
+
+strhash_stats strhash_get_stats(strhash *hashtable) {
+    strhash_stats s = { 0 };
+    s.size = hashtable->size;
+    if (s.size == 0) return s;
+    s.entry_max = s.entry_min = s.entry_count = hashtable->entry_sizes[0];
+    for (size_t i = 0; i<hashtable->capacity; i++) {
+        size_t size = hashtable->entry_sizes[i];
+        s.entry_min     = MIN(s.entry_min,  size);
+        s.entry_count   = MAX(s.entry_count,size);
+        s.entry_count += size;
+    }
+    s.entry_avg = ((double)s.entry_count)/((double)hashtable->capacity);
+    // On a besoin de reparcourir la liste des tailles pour calculer l'écart type.
+    for (size_t i = 0; i<hashtable->capacity; i++) {
+        double d = s.entry_avg - (double)hashtable->entry_sizes[i];
+        s.entry_stdev += d*d;
+    }
+    s.entry_stdev = sqrt(s.entry_stdev/(double)hashtable->capacity);
+    return s;
 }

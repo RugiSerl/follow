@@ -10,13 +10,16 @@ typedef struct {
 } strhash;
 
 typedef struct {
-    unsigned int size;          // Nombre d'éléments dans la table de hachage
-    unsigned int entry_count;   // Nombre d'entrées (listes) dans la table de hachage
-    unsigned int entry_min;     // Nombre minimum d'éléments au sein d'une entrée
-    unsigned int entry_max;     // Nombre maximum d'éléments au sein d'une entrée
-    double entry_avg;           // Nombre moyen d'éléments dans une entrée
-    double entry_stdev;         // Écart type du nombre d'éléments dans une entrée
+    size_t size;            // Nombre d'éléments dans la table de hachage
+    size_t entry_count;     // Nombre d'entrées (listes) dans la table de hachage
+    size_t entry_min;       // Nombre minimum d'éléments au sein d'une entrée
+    size_t entry_max;       // Nombre maximum d'éléments au sein d'une entrée
+    double entry_avg;       // Nombre moyen d'éléments dans une entrée
+    double entry_stdev;     // Écart type du nombre d'éléments dans une entrée
 } strhash_stats;
+
+#define MIN(x,y) ((x)<(y))?(x):(y)
+#define MAX(x,y) ((x)>(y))?(x):(y)
 
 /**
  * Génère un hash à partir d'une chaîne de caractères en utilisant un algorithme basique.
