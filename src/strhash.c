@@ -40,14 +40,14 @@ int compare_string(s_node* node, void* value) {
 
 int strhash_add(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->size;
-    size_t l1 = list_length(hashtable->entries[key]);
+    size_t l_before = list_length(hashtable->entries[key]);
 
     // L'usage de cette fonction est essentiel pour conserver l'ordre dans la liste chaînée.
     list_orderedAppend(&hashtable->entries[key], compare_string, value);
 
-    size_t l2 = list_length(hashtable->entries[key]);
-    hashtable->entry_sizes[key] = l2;
-    return l1 != l2;
+    size_t l_after = list_length(hashtable->entries[key]);
+    hashtable->entry_sizes[key] = l_after;
+    return l_before != l_after;
 }
 
 
