@@ -10,7 +10,7 @@ typedef struct {
 /**
  * Génère un hash à partir d'une chaîne de caractères en utilisant un algorithme basique.
  */
-int _hash_key(char* str);
+unsigned int _hash_key(char* str);
 
 /**
  * Crée une nouvelle table de hashage vide.

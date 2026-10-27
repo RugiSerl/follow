@@ -1,12 +1,13 @@
 #include "strhash.h"
 #include "list.h"
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
-int _hash_key(char* str) {
-    int key = 0;
+unsigned int _hash_key(char* str) {
+    unsigned int key = 0;
     while (*str != '\0') {
-        key = key * 2 + *str;
+        key = key * 2 + (unsigned char)*str;
         str++;
     }
     return key;
@@ -32,22 +33,22 @@ void strhash_free(strhash *hashtable) {
 
 
 int strhash_add(strhash* hashtable, char* value){
-    int key=_hash_key(value);
+    size_t key = _hash_key(value)%hashtable->size;
     for (s_node *n = hashtable->entries[key]; n != NULL; n = list_next(n)){
         if(strcmp(n->data, value) == 0){
-        return 0;
+            return 0;
         }
     }
-    hashtable->entries[key]=list_insert(hashtable->entries[key],value);
+    hashtable->entries[key] = list_insert(hashtable->entries[key],value);
     return 1;
 }
 
 
 int strhash_remove(strhash* hashtable, char* value){
-    int key=_hash_key(value);
+    size_t key = _hash_key(value)%hashtable->size;
     for (s_node *n = hashtable->entries[key]; n != NULL; n = list_next(n)){
-        if(strcmp(n->data, value) == 0){
-            hashtable->entries[key]=list_remove(hashtable->entries[key],value);
+        if (strcmp(n->data, value) == 0){
+            hashtable->entries[key] = list_remove(hashtable->entries[key],value);
             return 1;
         }
     }
