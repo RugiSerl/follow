@@ -1,5 +1,6 @@
 #include "list.h"
 #include "stddef.h"
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,6 +21,14 @@ void list_set_data(s_node * node, void * data){
 
 s_node * list_next(s_node * node){
     return node->next;
+}
+
+size_t list_length(s_node *node) {
+    if (node == NULL) {
+        return 0;
+    } else {
+        return 1 + list_length(node->next);
+    }
 }
 
 s_node * list_insert(s_node * head, void * data){

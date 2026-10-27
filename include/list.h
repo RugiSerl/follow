@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stddef.h>
 typedef struct _list_node s_node;
 struct _list_node{
     void * data;
@@ -28,6 +29,12 @@ void list_set_data(s_node * node, void * data);
  * Renvoie le noeud suivant node donné en paramètre.
  */
 s_node * list_next(s_node * node);
+
+/**
+ * Récupère la taille de la liste chaînée.
+ * Si node vaut NULL, la taille est de 0.
+ */
+size_t list_length(s_node* node);
 
 /**
  * Ajoute un élément en tête de liste.
