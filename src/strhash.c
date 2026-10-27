@@ -72,16 +72,15 @@ strhash_stats strhash_get_stats(strhash *hashtable) {
     strhash_stats s = { 0 };
     s.size = hashtable->size;
     if (s.size == 0) return s;
-    s.entry_max = s.entry_min = s.entry_count = hashtable->entry_sizes[0];
+    s.entry_max = s.entry_min = hashtable->entry_sizes[0];
+    s.entry_avg = ((double)s.size)/((double)hashtable->capacity);
     for (size_t i = 0; i<hashtable->capacity; i++) {
+        // Calcul du min/max
         size_t size = hashtable->entry_sizes[i];
-        s.entry_min     = MIN(s.entry_min,  size);
-        s.entry_count   = MAX(s.entry_count,size);
-        s.entry_count += size;
-    }
-    s.entry_avg = ((double)s.entry_count)/((double)hashtable->capacity);
-    // On a besoin de reparcourir la liste des tailles pour calculer l'écart type.
-    for (size_t i = 0; i<hashtable->capacity; i++) {
+        s.entry_min = MIN(s.entry_min, size);
+        s.entry_max = MAX(s.entry_max, size);
+
+        // Calcul de l'écart type
         double d = s.entry_avg - (double)hashtable->entry_sizes[i];
         s.entry_stdev += d*d;
     }

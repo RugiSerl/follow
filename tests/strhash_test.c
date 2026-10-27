@@ -24,10 +24,38 @@ void strhash_create_free_test() {
     free(s);
     s = strhash_create(50);
     TEST_ASSERT_EQUAL_INT(50, s->capacity);
+    TEST_ASSERT_EQUAL_INT(0, s->size);
+    strhash_free(s);
+}
+
+void strhash_get_stats_test() {
+    strhash* s = strhash_create(10);
+    TEST_ASSERT_EQUAL_INT(10, s->capacity);
+    TEST_ASSERT_EQUAL_INT(0, s->size);
+    char s1[]="test", s2[]="super", s3[]="cool", s4[]="génial", s5[]="génie";
+    strhash_add(s, s1);
+    strhash_add(s, s2);
+    strhash_add(s, s3);
+    strhash_add(s, s4);
+    strhash_add(s, s5);
+    TEST_ASSERT_EQUAL_INT(10, s->capacity);
+    TEST_ASSERT_EQUAL_INT(5, s->size);
+    strhash_stats stats = strhash_get_stats(s);
+    TEST_ASSERT_EQUAL_INT(5, stats.size);
+    TEST_ASSERT_EQUAL_INT(0, stats.entry_min);
+    TEST_ASSERT_EQUAL_INT(2, stats.entry_max);
+    TEST_ASSERT_DOUBLE_WITHIN(0.001, 0.5, stats.entry_avg);
+    TEST_ASSERT_DOUBLE_WITHIN(0.001, 0.670820393, stats.entry_stdev);
+
+    printf("size : %lg\n", stats.entry_stdev);
+    for (int i = 0; i<s->capacity; i++) {
+        printf("size(i=%d)=%d\n", i, (int)s->entry_sizes[i]);
+    }
     strhash_free(s);
 }
 
 void strhash_test() {
     RUN_TEST(hash_key_test);
     RUN_TEST(strhash_create_free_test);
+    RUN_TEST(strhash_get_stats_test);
 }

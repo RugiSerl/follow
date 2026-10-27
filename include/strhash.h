@@ -11,7 +11,6 @@ typedef struct {
 
 typedef struct {
     size_t size;            // Nombre d'éléments dans la table de hachage
-    size_t entry_count;     // Nombre d'entrées (listes) dans la table de hachage
     size_t entry_min;       // Nombre minimum d'éléments au sein d'une entrée
     size_t entry_max;       // Nombre maximum d'éléments au sein d'une entrée
     double entry_avg;       // Nombre moyen d'éléments dans une entrée
@@ -48,6 +47,6 @@ int strhash_add(strhash* hashtable, char* value);
 int strhash_remove(strhash* hashtable, char* value);
 
 /**
- * Permet d'afficher des statistiques sur la table de hachage.
+ * Permet de récupérer des statistiques sur la table de hachage.
  */
 strhash_stats strhash_get_stats(strhash* hashtable);

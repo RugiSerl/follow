@@ -11,7 +11,7 @@ OBJ=$(patsubst $(SRC_DIR)/%, $(BUILD_DIR)/%, $(filter-out $(SRC_DIR)/main.o, $(S
 OBJ_MAIN=$(OBJ) $(BUILD_DIR)/main.o
 SRC_TEST=$(call wildcard, $(TEST_DIR)/*.c)
 OBJ_TEST=$(patsubst $(TEST_DIR)/%, $(BUILD_DIR)/%, $(SRC_TEST:.c=.o))
-CFLAGS = -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g -O1  -Iexternal/unity/src -I$(INCLUDE_DIR)
+CFLAGS = -DUNITY_INCLUDE_DOUBLE -DUNITY_DOUBLE_PRECISION=1e-12f -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g -O1  -Iexternal/unity/src -I$(INCLUDE_DIR)
 LFLAGS = -lm -lasan -fsanitize=address,undefined -fno-omit-frame-pointer
 
 run: $(TARGET)
