@@ -17,6 +17,7 @@ unsigned int _hash_key(char* str) {
 strhash* strhash_create(unsigned int capacity) {
     strhash* s = (strhash*)malloc(sizeof(strhash));
     s->capacity = capacity;
+    s->size = 0;
     s->entries = (s_node**)malloc(sizeof(s_node*)*capacity);
     s->entry_sizes = (size_t*)malloc(sizeof(size_t)*capacity);
     for (unsigned int i = 0; i<s->capacity; i++) {

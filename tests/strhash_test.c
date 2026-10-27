@@ -18,6 +18,7 @@ void hash_key_test() {
 void strhash_create_free_test() {
     strhash* s = strhash_create(10);
     TEST_ASSERT_EQUAL_INT(10, s->capacity);
+    TEST_ASSERT_EQUAL_INT(0, s->size);
     free(s->entries);
     free(s->entry_sizes);
     free(s);

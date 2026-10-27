@@ -12,7 +12,7 @@ OBJ_MAIN=$(OBJ) $(BUILD_DIR)/main.o
 SRC_TEST=$(call wildcard, $(TEST_DIR)/*.c)
 OBJ_TEST=$(patsubst $(TEST_DIR)/%, $(BUILD_DIR)/%, $(SRC_TEST:.c=.o))
 CFLAGS = -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g -O1  -Iexternal/unity/src -I$(INCLUDE_DIR)
-LFLAGS = -lasan -fsanitize=address,undefined -fno-omit-frame-pointer
+LFLAGS = -lm -lasan -fsanitize=address,undefined -fno-omit-frame-pointer
 
 run: $(TARGET)
 	$(TARGET)
