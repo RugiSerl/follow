@@ -19,6 +19,7 @@ void strhash_create_free_test() {
     strhash* s = strhash_create(10);
     TEST_ASSERT_EQUAL_INT(10, s->size);
     free(s->entries);
+    free(s->entry_sizes);
     free(s);
     s = strhash_create(50);
     TEST_ASSERT_EQUAL_INT(50, s->size);
