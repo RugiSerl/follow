@@ -13,12 +13,12 @@ unsigned int _hash_key(char* str) {
     return key;
 }
 
-strhash* strhash_create(unsigned int size) {
+strhash* strhash_create(unsigned int capacity) {
     strhash* s = (strhash*)malloc(sizeof(strhash));
-    s->size = size;
-    s->entries = (s_node**)malloc(sizeof(s_node*)*size);
-    s->entry_sizes = (size_t*)malloc(sizeof(size_t)*size);
-    for (unsigned int i = 0; i<s->size; i++) {
+    s->capacity = capacity;
+    s->entries = (s_node**)malloc(sizeof(s_node*)*capacity);
+    s->entry_sizes = (size_t*)malloc(sizeof(size_t)*capacity);
+    for (unsigned int i = 0; i<s->capacity; i++) {
         s->entries[i] = list_create();
         s->entry_sizes[i] = 0;
     }
@@ -26,7 +26,7 @@ strhash* strhash_create(unsigned int size) {
 }
 
 void strhash_free(strhash *hashtable) {
-    for (unsigned int i = 0; i<hashtable->size; i++) {
+    for (unsigned int i = 0; i<hashtable->capacity; i++) {
         list_destroy(hashtable->entries[i]);
     }
     free(hashtable->entries);
@@ -39,7 +39,7 @@ int compare_string(s_node* node, void* value) {
 }
 
 int strhash_add(strhash* hashtable, char* value){
-    size_t key = _hash_key(value)%hashtable->size;
+    size_t key = _hash_key(value)%hashtable->capacity;
     size_t l_before = list_length(hashtable->entries[key]);
 
     // L'usage de cette fonction est essentiel pour conserver l'ordre dans la liste chaînée.
@@ -47,16 +47,19 @@ int strhash_add(strhash* hashtable, char* value){
 
     size_t l_after = list_length(hashtable->entries[key]);
     hashtable->entry_sizes[key] = l_after;
-    return l_before != l_after;
+    if (l_before == l_after) return 0;
+    hashtable->size++;
+    return 1;
 }
 
 
 int strhash_remove(strhash* hashtable, char* value){
-    size_t key = _hash_key(value)%hashtable->size;
+    size_t key = _hash_key(value)%hashtable->capacity;
     for (s_node *n = hashtable->entries[key]; n != NULL; n = list_next(n)){
         if (strcmp(n->data, value) == 0) {
             hashtable->entries[key] = list_remove(hashtable->entries[key],value);
             hashtable->entry_sizes[key]--;
+            hashtable->size--;
             return 1;
         }
     }

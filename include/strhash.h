@@ -3,10 +3,20 @@
 #include <stddef.h>
 
 typedef struct {
-    s_node** entries;
-    size_t* entry_sizes;
-    size_t size;
+    s_node** entries;       // Tableau contenant les entrées.
+    size_t* entry_sizes;    // Tableau stockant la taille de toutes les entrées.
+    size_t capacity;        // Taille de la table de hachage.
+    size_t size;            // Nombre d'éléments dans le tableau.
 } strhash;
+
+typedef struct {
+    unsigned int size;          // Nombre d'éléments dans la table de hachage
+    unsigned int entry_count;   // Nombre d'entrées (listes) dans la table de hachage
+    unsigned int entry_min;     // Nombre minimum d'éléments au sein d'une entrée
+    unsigned int entry_max;     // Nombre maximum d'éléments au sein d'une entrée
+    double entry_avg;           // Nombre moyen d'éléments dans une entrée
+    double entry_stdev;         // Écart type du nombre d'éléments dans une entrée
+} strhash_stats;
 
 /**
  * Génère un hash à partir d'une chaîne de caractères en utilisant un algorithme basique.
@@ -37,4 +47,4 @@ int strhash_remove(strhash* hashtable, char* value);
 /**
  * Permet d'afficher des statistiques sur la table de hachage.
  */
-void strhash_stats(strhash* hashtable);
+strhash_stats strhash_get_stats(strhash* hashtable);
