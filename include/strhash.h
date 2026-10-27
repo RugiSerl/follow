@@ -4,7 +4,7 @@
 
 typedef struct {
     s_node** entries;
-    int* entry_sizes;
+    size_t* entry_sizes;
     size_t size;
 } strhash;
 
