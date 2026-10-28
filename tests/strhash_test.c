@@ -50,6 +50,45 @@ void strhash_contains_test() {
     strhash_free(s);
 }
 
+void strhash_equal_test() {
+    strhash* s1 = strhash_create(10);
+    strhash* s2 = strhash_create(10);
+    char c1[]="test", c2[]="super", c3[]="cool", c4[]="génial";
+    TEST_ASSERT(strhash_equal(s1, s2));
+    TEST_ASSERT(strhash_equal(s1, s1));
+    strhash_add(s1, c1);
+    strhash_add(s1, c2);
+    strhash_add(s1, c3);
+    strhash_add(s1, c4);
+    TEST_ASSERT(!strhash_equal(s1, s2));
+    strhash_add(s2, c1);
+    strhash_add(s2, c2);
+    strhash_add(s2, c3);
+    strhash_add(s2, c4);
+    TEST_ASSERT(strhash_equal(s1, s2));
+    TEST_ASSERT(strhash_equal(s1, s1));
+    strhash_free(s1);
+    strhash_free(s2);
+
+    s1 = strhash_create(10);
+    s2 = strhash_create(2);
+    TEST_ASSERT(strhash_equal(s1, s2));
+    strhash_add(s1, c1);
+    strhash_add(s1, c2);
+    strhash_add(s1, c3);
+    strhash_add(s1, c4);
+    TEST_ASSERT(!strhash_equal(s1, s2));
+    strhash_add(s2, c1);
+    strhash_add(s2, c2);
+    strhash_add(s2, c3);
+    strhash_add(s2, c4);
+    TEST_ASSERT(strhash_equal(s1, s2));
+    strhash_display(s1);
+    strhash_display(s2);
+    strhash_free(s1);
+    strhash_free(s2);
+}
+
 void strhash_get_stats_test() {
     strhash* s = strhash_create(10);
     TEST_ASSERT_EQUAL_INT(10, s->capacity);
@@ -75,5 +114,6 @@ void strhash_test() {
     RUN_TEST(hash_key_test);
     RUN_TEST(strhash_create_free_test);
     RUN_TEST(strhash_contains_test);
+    RUN_TEST(strhash_equal_test);
     RUN_TEST(strhash_get_stats_test);
 }

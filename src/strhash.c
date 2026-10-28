@@ -81,6 +81,30 @@ int strhash_contains(strhash *hashtable, char *value) {
     return list_contains(hashtable->entries[key], compare_string, value);
 }
 
+int strhash_equal(strhash *s1, strhash *s2) {
+    // Première inclusion
+    for (size_t i = 0; i<s1->capacity; i++) {
+        s_node* l = s1->entries[i];
+        while (l != NULL) {
+            if (!strhash_contains(s2, l->data)) {
+                return 0;
+            }
+            l = l->next;
+        }
+    }
+    // Inclusion réciproque
+    for (size_t i = 0; i<s2->capacity; i++) {
+        s_node* l = s2->entries[i];
+        while (l != NULL) {
+            if (!strhash_contains(s1, l->data)) {
+                return 0;
+            }
+            l = l->next;
+        }
+    }
+    return 1;
+}
+
 strhash_stats strhash_get_stats(strhash *hashtable) {
     strhash_stats s = { 0 };
     s.size = hashtable->size;

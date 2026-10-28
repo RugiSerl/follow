@@ -57,6 +57,11 @@ int strhash_remove(strhash* hashtable, char* value);
 int strhash_contains(strhash* hashtable, char* value);
 
 /**
+ * Vérifie si deux tables de hachage contiennent les mêmes éléments.
+ */
+int strhash_equal(strhash* s1, strhash* s2);
+
+/**
  * Permet de récupérer des statistiques sur la table de hachage.
  */
 strhash_stats strhash_get_stats(strhash* hashtable);
