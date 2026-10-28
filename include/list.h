@@ -103,8 +103,32 @@ void list_destroy(s_node * head);
 */
 int node_int_to_string(s_node * node, char *buffer, int size);
 
+/* -----------------------------------------------------------------
+   Conversion d'un noeud pointant sur une donnée de type double
+	en chaine de caracteres
+   -----------------------------------------------------------------
+   node		: pointeur sur le noeud à convertir
+   buffer (PS) 	: tampon contenant la chaine obtenue
+   size		: taille maximum de la chaine
+   -----------------------------------------------------------------
+   retourne 1 si la chaine converti est trop longue pour le tampon
+	    0 sinon
+   -----------------------------------------------------------------
+*/
 int node_double_to_string(s_node * node, char *buffer, int size);
 
+/* -----------------------------------------------------------------
+   Conversion d'un noeud pointant sur une donnée de type char*
+	en chaine de caracteres
+   -----------------------------------------------------------------
+   node		: pointeur sur le noeud à convertir
+   buffer (PS) 	: tampon contenant la chaine obtenue
+   size		: taille maximum de la chaine
+   -----------------------------------------------------------------
+   retourne 1 si la chaine converti est trop longue pour le tampon
+	    0 sinon
+   -----------------------------------------------------------------
+*/
 int node_string_to_string(s_node * node, char *buffer, int size);
 
 /* -----------------------------------------------------------------

@@ -49,24 +49,30 @@ int strhash_add(strhash* hashtable, char* value){
     list_orderedAppend(&hashtable->entries[key], compare_string, value);
 
     size_t l_after = list_length(hashtable->entries[key]);
-    hashtable->entry_sizes[key] = l_after;
-    if (l_before == l_after) return 0;
-    hashtable->size++;
-    return 1;
+    if (l_before == l_after) {
+       return 0; // On n'a pas ajouté la nouvelle valeur
+    } else {
+        hashtable->entry_sizes[key] = l_after;
+        hashtable->size++;
+        return 1;
+    }
 }
 
-
+// L'implémentation de cette fonction est très similaire à celle de strhash_add.
 int strhash_remove(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
-    for (s_node *n = hashtable->entries[key]; n != NULL; n = list_next(n)){
-        if (strcmp(n->data, value) == 0) {
-            hashtable->entries[key] = list_remove(hashtable->entries[key],value);
-            hashtable->entry_sizes[key]--;
-            hashtable->size--;
-            return 1;
-        }
+    size_t l_before = list_length(hashtable->entries[key]);
+
+    hashtable->entries[key] = list_remove(hashtable->entries[key],value);
+
+    size_t l_after = list_length(hashtable->entries[key]);
+    if (l_before == l_after) {
+        return 0; // On n'a rien supprimé.
+    } else {
+        hashtable->entry_sizes[key] = l_after;
+        hashtable->size--;
+        return 1;
     }
-    return 0;
 }
 
 strhash_stats strhash_get_stats(strhash *hashtable) {
