@@ -46,11 +46,6 @@ void strhash_get_stats_test() {
     TEST_ASSERT_EQUAL_INT(2, stats.entry_max);
     TEST_ASSERT_DOUBLE_WITHIN(0.001, 0.5, stats.entry_avg);
     TEST_ASSERT_DOUBLE_WITHIN(0.001, 0.670820393, stats.entry_stdev);
-
-    printf("size : %lg\n", stats.entry_stdev);
-    for (int i = 0; i<s->capacity; i++) {
-        printf("size(i=%d)=%d\n", i, (int)s->entry_sizes[i]);
-    }
     strhash_free(s);
 }
 

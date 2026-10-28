@@ -2,6 +2,7 @@
 #include "list.h"
 #include <math.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -86,4 +87,13 @@ strhash_stats strhash_get_stats(strhash *hashtable) {
     }
     s.entry_stdev = sqrt(s.entry_stdev/(double)hashtable->capacity);
     return s;
+}
+
+void strhash_display(strhash *hashtable) {
+    printf("------------------\n");
+    printf("Table de hachage (%d éléments)\n", (int)hashtable->size);
+    for (size_t i = 0; i<hashtable->capacity; i++) {
+        printf("%000d : %s\n", i, list_to_string(hashtable->entries[i], node_string_to_string));
+    }
+    printf("------------------\n");
 }

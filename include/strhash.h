@@ -50,3 +50,8 @@ int strhash_remove(strhash* hashtable, char* value);
  * Permet de récupérer des statistiques sur la table de hachage.
  */
 strhash_stats strhash_get_stats(strhash* hashtable);
+
+/**
+ * Permet d'afficher dans la console le contenu de la table de hachage.
+ */
+void strhash_display(strhash* hashtable);
