@@ -26,6 +26,11 @@ typedef struct {
 unsigned int _hash_key(char* str);
 
 /**
+ * Fonction de comparaison pour les chaînes de caractères.
+ */
+int compare_string(s_node* node, void* value);
+
+/**
  * Crée une nouvelle table de hashage vide.
  * Si l'allocation a échoué, alors NULL est renvoyé.
  */
@@ -45,6 +50,11 @@ int strhash_add(strhash* hashtable, char* value);
  * Enlève un élément de la table de hachage, s'il est bien dedans.
  */
 int strhash_remove(strhash* hashtable, char* value);
+
+/**
+ * Vérifie si un élément est présent dans la table de hachage.
+ */
+int strhash_contains(strhash* hashtable, char* value);
 
 /**
  * Permet de récupérer des statistiques sur la table de hachage.

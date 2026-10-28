@@ -28,6 +28,28 @@ void strhash_create_free_test() {
     strhash_free(s);
 }
 
+void strhash_contains_test() {
+    strhash* s = strhash_create(10);
+    TEST_ASSERT_EQUAL_INT(10, s->capacity);
+    TEST_ASSERT_EQUAL_INT(0, s->size);
+    char s1[]="test", s2[]="super", s3[]="cool", s4[]="génial", s5[]="génie";
+    strhash_add(s, s1);
+    strhash_add(s, s2);
+    strhash_add(s, s3);
+    strhash_add(s, s4);
+    strhash_add(s, s5);
+    TEST_ASSERT_EQUAL_INT(10, s->capacity);
+    TEST_ASSERT_EQUAL_INT(5, s->size);
+    TEST_ASSERT(strhash_contains(s, "super"));
+    TEST_ASSERT(!strhash_contains(s, "er"));
+    TEST_ASSERT(!strhash_contains(s, "superieur"));
+    TEST_ASSERT(!strhash_contains(s, "géni"));
+    TEST_ASSERT(strhash_contains(s, "génial"));
+    TEST_ASSERT(strhash_contains(s, "génie"));
+    TEST_ASSERT(strhash_contains(s, "test"));
+    strhash_free(s);
+}
+
 void strhash_get_stats_test() {
     strhash* s = strhash_create(10);
     TEST_ASSERT_EQUAL_INT(10, s->capacity);
@@ -52,5 +74,6 @@ void strhash_get_stats_test() {
 void strhash_test() {
     RUN_TEST(hash_key_test);
     RUN_TEST(strhash_create_free_test);
+    RUN_TEST(strhash_contains_test);
     RUN_TEST(strhash_get_stats_test);
 }

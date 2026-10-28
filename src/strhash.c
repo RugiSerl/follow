@@ -15,6 +15,10 @@ unsigned int _hash_key(char* str) {
     return key;
 }
 
+int compare_string(s_node* node, void* value) {
+    return strcmp((char*)node->data, (char*)value);
+}
+
 strhash* strhash_create(unsigned int capacity) {
     strhash* s = (strhash*)malloc(sizeof(strhash));
     s->capacity = capacity;
@@ -37,9 +41,6 @@ void strhash_free(strhash *hashtable) {
     free(hashtable);
 }
 
-int compare_string(s_node* node, void* value) {
-    return strcmp((char*)node->data, (char*)value);
-}
 
 int strhash_add(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
@@ -73,6 +74,11 @@ int strhash_remove(strhash* hashtable, char* value){
         hashtable->size--;
         return 1;
     }
+}
+
+int strhash_contains(strhash *hashtable, char *value) {
+    size_t key = _hash_key(value)%hashtable->capacity;
+    return list_contains(hashtable->entries[key], compare_string, value);
 }
 
 strhash_stats strhash_get_stats(strhash *hashtable) {
