@@ -31,6 +31,14 @@ size_t list_length(s_node *node) {
     }
 }
 
+int list_contains(s_node *node, int (*compare)(s_node *, void *), void *data) {
+    if (node == NULL) {
+        return 0;
+    } else {
+        return compare(node, data)==0 || list_contains(node->next, compare, data);
+    }
+}
+
 s_node * list_insert(s_node * head, void * data){
     s_node * new_node = (s_node *)malloc(sizeof(s_node));
     if (new_node == NULL) return NULL; // Propagation de l'erreur au contexte appelant.

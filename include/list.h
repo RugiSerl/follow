@@ -37,6 +37,11 @@ s_node * list_next(s_node * node);
 size_t list_length(s_node* node);
 
 /**
+ * Vérifie si la liste contient une certaine valeur.
+ */
+int list_contains(s_node* node, int(*compare)(s_node *,void *), void* data);
+
+/**
  * Ajoute un élément en tête de liste.
  * Renvoie le nouveau chainon qui correspond à la nouvelle tête de liste
  * Si l'allocation a échoué, alors cette valeur vaut le pointeur NULL.
