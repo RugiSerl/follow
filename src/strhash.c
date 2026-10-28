@@ -117,16 +117,16 @@ int strhash_equal(strhash *s1, strhash *s2) {
 
 strhash_allocated* strhash_from_string(const char* string, size_t capacity) {
     strhash* res = strhash_create(capacity);
-    char* temp = malloc(strlen(string)+1);
+    char* temp = malloc(strlen(string)+1); // On stocke temporairement string dans temp pour éviter de modifier string
     strcpy(temp, string);
     char* token = strtok(temp, "|");
-    while (token != NULL) {
-        char* value = malloc(strlen(token)+1);
-        strcpy(value, token);
+    while (token != NULL) { // Tant qu'on n'est pas arrivé au bout de la chaîne.
+        char* value = malloc(strlen(token)+1);  // On est obligé d'allouer manuellement chaque élément pour être sûr qu'on a bien une copie.
+        strcpy(value, token);                   // copie dans l'élément value.
         if (!strhash_add(res, value)) {
-            free(value);
+            free(value); // La valeur n'a pas été insérée. On la free maintenant parce qu'elle ne pourra plus être free après sinon.
         }
-        token = strtok(NULL, "|");
+        token = strtok(NULL, "|"); // On passe au token suivant (élément suivant).
     }
     free(temp);
     return res;
