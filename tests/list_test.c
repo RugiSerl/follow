@@ -178,6 +178,9 @@ void list_orderedAppend_test() {
     added = list_orderedAppend(&list, compare_int_basic, &m);
     TEST_ASSERT(check_list_state(list, node_int_to_string, "5 -> 10 -> 20 -> 40 -> 80 -> null"));
     TEST_ASSERT_EQUAL_PTR(list->next->next->next->next, added);
+    added = list_orderedAppend(&list, compare_int_basic, &l);
+    TEST_ASSERT(check_list_state(list, node_int_to_string, "5 -> 10 -> 20 -> 40 -> 80 -> null"));
+    TEST_ASSERT_EQUAL_PTR(list, added);
 
     free(list->next->next->next->next);
     free(list->next->next->next);

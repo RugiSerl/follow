@@ -19,7 +19,7 @@ int compare_string(s_node* node, void* value) {
     return strcmp((char*)node->data, (char*)value);
 }
 
-strhash* strhash_create(unsigned int capacity) {
+strhash* strhash_create(size_t capacity) {
     strhash* s = (strhash*)malloc(sizeof(strhash));
     s->capacity = capacity;
     s->size = 0;
@@ -41,6 +41,16 @@ void strhash_free(strhash *hashtable) {
     free(hashtable);
 }
 
+void strhash_allocated_free(strhash_allocated *hashtable) {
+    for (size_t i = 0; i<hashtable->capacity; i++) {
+        s_node* l = hashtable->entries[i];
+        while (l != NULL) {
+            free(l->data);
+            l = l->next;
+        }
+    }
+    strhash_free(hashtable);
+}
 
 int strhash_add(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
@@ -103,6 +113,23 @@ int strhash_equal(strhash *s1, strhash *s2) {
         }
     }
     return 1;
+}
+
+strhash_allocated* strhash_from_string(const char* string, size_t capacity) {
+    strhash* res = strhash_create(capacity);
+    char* temp = malloc(strlen(string)+1);
+    strcpy(temp, string);
+    char* token = strtok(temp, "|");
+    while (token != NULL) {
+        char* value = malloc(strlen(token)+1);
+        strcpy(value, token);
+        if (!strhash_add(res, value)) {
+            free(value);
+        }
+        token = strtok(NULL, "|");
+    }
+    free(temp);
+    return res;
 }
 
 strhash_stats strhash_get_stats(strhash *hashtable) {

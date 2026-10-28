@@ -9,6 +9,10 @@ typedef struct {
     size_t size;            // Nombre d'éléments dans le tableau.
 } strhash;
 
+// Ajout d'un alias pour permettre de différencier une table de hachage dont les valeurs sont
+// allouées et qu'il faut libérer lorsqu'on libère la structure.
+typedef strhash strhash_allocated ;
+
 typedef struct {
     size_t size;            // Nombre d'éléments dans la table de hachage
     size_t entry_min;       // Nombre minimum d'éléments au sein d'une entrée
@@ -34,12 +38,17 @@ int compare_string(s_node* node, void* value);
  * Crée une nouvelle table de hashage vide.
  * Si l'allocation a échoué, alors NULL est renvoyé.
  */
-strhash* strhash_create(unsigned int size);
+strhash* strhash_create(size_t size);
 
 /**
  * Libère/détruit une table de hachage.
  */
 void strhash_free(strhash* hashtable);
+
+/**
+ * Libère/détruit une table de hachage dont les éléments sont à libérer également.
+ */
+void strhash_allocated_free(strhash_allocated* hashtable);
 
 /**
  * Insère un élément dans la table de hachage s'il n'est pas déjà inséré
@@ -60,6 +69,12 @@ int strhash_contains(strhash* hashtable, char* value);
  * Vérifie si deux tables de hachage contiennent les mêmes éléments.
  */
 int strhash_equal(strhash* s1, strhash* s2);
+
+/**
+ * Crée une table de hachage à partir d'une chaîne de caractère sous la forme :
+ * "elt1|elt2|elt3|..."
+ */
+strhash* strhash_from_string(const char* string, size_t capacity);
 
 /**
  * Permet de récupérer des statistiques sur la table de hachage.

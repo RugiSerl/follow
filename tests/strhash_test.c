@@ -83,10 +83,27 @@ void strhash_equal_test() {
     strhash_add(s2, c3);
     strhash_add(s2, c4);
     TEST_ASSERT(strhash_equal(s1, s2));
-    strhash_display(s1);
-    strhash_display(s2);
     strhash_free(s1);
     strhash_free(s2);
+}
+
+void strhash_from_string_test() {
+    strhash_allocated* s1 = strhash_from_string("a|b|c|d|e|banane|tomate|x|x|u", 2);
+    strhash_allocated* s2 = strhash_from_string("banane|d|c|b|e|e|tomate|a|x|u", 10);
+    TEST_ASSERT(strhash_equal(s1, s2));
+    strhash_allocated_free(s1);
+    strhash_allocated_free(s2);
+
+    char a[]="a", b[]="b", c[]="c";
+    strhash_allocated* s3 = strhash_from_string("a|b|c", 3);
+    strhash* s4 = strhash_create(3);
+    TEST_ASSERT(!strhash_equal(s3, s4));
+    strhash_add(s4, a);
+    strhash_add(s4, b);
+    strhash_add(s4, c);
+    TEST_ASSERT(strhash_equal(s3, s4));
+    strhash_allocated_free(s3);
+    strhash_free(s4);
 }
 
 void strhash_get_stats_test() {
@@ -115,5 +132,6 @@ void strhash_test() {
     RUN_TEST(strhash_create_free_test);
     RUN_TEST(strhash_contains_test);
     RUN_TEST(strhash_equal_test);
+    RUN_TEST(strhash_from_string_test);
     RUN_TEST(strhash_get_stats_test);
 }

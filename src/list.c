@@ -98,6 +98,8 @@ s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void 
     } else if (compare(*head, param) > 0) { // Cas où on insère au début de la liste.
         *head = list_insert(*head, param);
         return *head;
+    } else if (compare(*head, param) == 0) { // Cas ou l'élément est déjà présent en début de liste.
+        return *head;
     }
     // Dans les autres cas (après le début de la liste) on n'a pas besoin de changer head.
 
