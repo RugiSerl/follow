@@ -21,10 +21,20 @@ int compare_string(s_node* node, void* value) {
 
 strhash* strhash_create(size_t capacity) {
     strhash* s = (strhash*)malloc(sizeof(strhash));
+    if (s==NULL) return NULL;
     s->capacity = capacity;
     s->size = 0;
     s->entries = (s_node**)malloc(sizeof(s_node*)*capacity);
+    if(s->entries == NULL) {
+        free(s);
+        return NULL;
+    }
     s->entry_sizes = (size_t*)malloc(sizeof(size_t)*capacity);
+    if(s->entry_sizes==NULL) {
+        free(s->entries);
+        free(s);
+        return NULL;
+    }
     for (unsigned int i = 0; i<s->capacity; i++) {
         s->entries[i] = list_create();
         s->entry_sizes[i] = 0;
