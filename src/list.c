@@ -124,33 +124,6 @@ s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void 
 // ----------------------------------------
 // Fonctions d'affichage / test de la liste
 
-int node_int_to_string(s_node * node, char *buffer, int size) {
-	int * value;
-	int str_length;
-
-	value=(int *)list_get_data(node);
-	str_length=snprintf(buffer, size, "%d", *value);
-	return (str_length >= size);  // voir man snprintf (return value)
-}
-
-int node_double_to_string(s_node * node, char *buffer, int size) {
-	double * value;
-	int str_length;
-
-	value=(double *)list_get_data(node);
-	str_length=snprintf(buffer, size, "%lg", *value);
-	return (str_length >= size);  // voir man snprintf (return value)
-}
-
-int node_string_to_string(s_node * node, char *buffer, int size) {
-	char * value;
-	int str_length;
-
-	value=(char *)list_get_data(node);
-	str_length=snprintf(buffer, size, "%s", value);
-	return (str_length >= size);  // voir man snprintf (return value)
-}
-
 char *  list_to_string (s_node * head, int (*node_to_string)(s_node * node, char * buffer, int buffer_size))  {
 	static char list_as_a_string[LIST_AS_A_STRING_MAX_SIZE];
 	static char buffer[NODE_AS_A_STRING_MAX_SIZE];

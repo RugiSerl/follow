@@ -6,6 +6,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+int node_string_to_string(s_node * node, char *buffer, int size) {
+	char * value;
+	int str_length;
+
+	value=(char *)list_get_data(node);
+	str_length=snprintf(buffer, size, "%s", value);
+	return (str_length >= size);  // voir man snprintf (return value)
+}
+
 unsigned int _hash_key(char* str) {
     unsigned int key = 0;
     while (*str != '\0') {

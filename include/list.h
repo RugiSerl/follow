@@ -95,48 +95,6 @@ void list_destroy(s_node * head);
 #define NODE_AS_A_STRING_MAX_SIZE 100
 
 /* -----------------------------------------------------------------
-   Conversion d'un noeud pointant sur une donnée de type int
-	en chaine de caracteres
-   -----------------------------------------------------------------
-   node		: pointeur sur le noeud à convertir
-   buffer (PS) 	: tampon contenant la chaine obtenue
-   size		: taille maximum de la chaine
-   -----------------------------------------------------------------
-   retourne 1 si la chaine converti est trop longue pour le tampon
-	    0 sinon
-   -----------------------------------------------------------------
-*/
-int node_int_to_string(s_node * node, char *buffer, int size);
-
-/* -----------------------------------------------------------------
-   Conversion d'un noeud pointant sur une donnée de type double
-	en chaine de caracteres
-   -----------------------------------------------------------------
-   node		: pointeur sur le noeud à convertir
-   buffer (PS) 	: tampon contenant la chaine obtenue
-   size		: taille maximum de la chaine
-   -----------------------------------------------------------------
-   retourne 1 si la chaine converti est trop longue pour le tampon
-	    0 sinon
-   -----------------------------------------------------------------
-*/
-int node_double_to_string(s_node * node, char *buffer, int size);
-
-/* -----------------------------------------------------------------
-   Conversion d'un noeud pointant sur une donnée de type char*
-	en chaine de caracteres
-   -----------------------------------------------------------------
-   node		: pointeur sur le noeud à convertir
-   buffer (PS) 	: tampon contenant la chaine obtenue
-   size		: taille maximum de la chaine
-   -----------------------------------------------------------------
-   retourne 1 si la chaine converti est trop longue pour le tampon
-	    0 sinon
-   -----------------------------------------------------------------
-*/
-int node_string_to_string(s_node * node, char *buffer, int size);
-
-/* -----------------------------------------------------------------
    Conversion des données d'une liste en chaine de caracteres
 	Les donnéees sont separees par ->
    -----------------------------------------------------------------

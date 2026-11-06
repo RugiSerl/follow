@@ -12,6 +12,15 @@ int compare_int_basic(s_node* s, void* data) {
     return *(int *)(s->data) - *(int *)data;
 }
 
+int node_int_to_string(s_node * node, char *buffer, int size) {
+	int * value;
+	int str_length;
+
+	value=(int *)list_get_data(node);
+	str_length=snprintf(buffer, size, "%d", *value);
+	return (str_length >= size);  // voir man snprintf (return value)
+}
+
 void list_create_test() {
     s_node* list = list_create();
     TEST_ASSERT_EQUAL_PTR(NULL, list);
