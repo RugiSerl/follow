@@ -44,7 +44,7 @@ void strhash_free(strhash* hashtable);
 /**
  * Insère un élément dans la table de hachage s'il n'est pas déjà inséré
  */
-s_node* strhash_add(strhash* hashtable, char* value);
+char* strhash_add(strhash* hashtable, char* value);
 
 /**
  * Enlève un élément de la table de hachage, s'il est bien dedans.

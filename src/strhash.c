@@ -58,7 +58,7 @@ void strhash_free(strhash *hashtable) {
     free(hashtable);
 }
 
-s_node* strhash_add(strhash* hashtable, char* value){
+char* strhash_add(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
     size_t l_before = list_length(hashtable->entries[key]);
     char* value_copy = malloc(strlen(value)+1);
@@ -74,7 +74,7 @@ s_node* strhash_add(strhash* hashtable, char* value){
         hashtable->entry_sizes[key] = l_after;
         hashtable->size++;
     }
-    return new_elt;
+    return new_elt->data;
 }
 
 // L'implémentation de cette fonction est très similaire à celle de strhash_add.

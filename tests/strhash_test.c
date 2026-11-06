@@ -55,24 +55,24 @@ void strhash_contains_test() {
 void strhash_add_test() {
     strhash* s = strhash_create(5);
     char s1[]="test", s2[]="super", s3[]="cool";
-    s_node* l = strhash_add(s, s1);
-    TEST_ASSERT_NOT_EQUAL_PTR(NULL, l);
-    TEST_ASSERT_NOT_EQUAL_PTR(s1, l->data);
-    TEST_ASSERT_EQUAL_INT(0, strcmp(l->data, s1));
+    char* added = strhash_add(s, s1);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, added);
+    TEST_ASSERT_NOT_EQUAL_PTR(s1, added);
+    TEST_ASSERT_EQUAL_INT(0, strcmp(added, s1));
     TEST_ASSERT(strhash_contains(s, s1));
     TEST_ASSERT(!strhash_contains(s, s2));
 
-    l = strhash_add(s, s2);
-    TEST_ASSERT_NOT_EQUAL_PTR(NULL, l);
-    TEST_ASSERT_NOT_EQUAL_PTR(s2, l->data);
-    TEST_ASSERT_EQUAL_INT(0, strcmp(l->data, s2));
+    added = strhash_add(s, s2);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, added);
+    TEST_ASSERT_NOT_EQUAL_PTR(s2, added);
+    TEST_ASSERT_EQUAL_INT(0, strcmp(added, s2));
     TEST_ASSERT(strhash_contains(s, s1));
     TEST_ASSERT(strhash_contains(s, s2));
     TEST_ASSERT(!strhash_contains(s, s3));
 
-    s_node* l2 = strhash_add(s, s2);
-    TEST_ASSERT_NOT_EQUAL_PTR(NULL, l);
-    TEST_ASSERT_EQUAL_PTR(l, l2);
+    char* added2 = strhash_add(s, s2);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, added);
+    TEST_ASSERT_EQUAL_PTR(added, added2);
     TEST_ASSERT(strhash_contains(s, s1));
     TEST_ASSERT(strhash_contains(s, s2));
     TEST_ASSERT(!strhash_contains(s, s3));
