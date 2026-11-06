@@ -1,8 +1,10 @@
+#include "list.h"
 #include "strhash.h"
 #include "unity.h"
 #include "unity_internals.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 void hash_key_test() {
@@ -47,6 +49,34 @@ void strhash_contains_test() {
     TEST_ASSERT(strhash_contains(s, "génial"));
     TEST_ASSERT(strhash_contains(s, "génie"));
     TEST_ASSERT(strhash_contains(s, "test"));
+    strhash_free(s);
+}
+
+void strhash_add_test() {
+    strhash* s = strhash_create(5);
+    char s1[]="test", s2[]="super", s3[]="cool";
+    s_node* l = strhash_add(s, s1);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, l);
+    TEST_ASSERT_NOT_EQUAL_PTR(s1, l->data);
+    TEST_ASSERT_EQUAL_INT(0, strcmp(l->data, s1));
+    TEST_ASSERT(strhash_contains(s, s1));
+    TEST_ASSERT(!strhash_contains(s, s2));
+
+    l = strhash_add(s, s2);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, l);
+    TEST_ASSERT_NOT_EQUAL_PTR(s2, l->data);
+    TEST_ASSERT_EQUAL_INT(0, strcmp(l->data, s2));
+    TEST_ASSERT(strhash_contains(s, s1));
+    TEST_ASSERT(strhash_contains(s, s2));
+    TEST_ASSERT(!strhash_contains(s, s3));
+
+    s_node* l2 = strhash_add(s, s2);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, l);
+    TEST_ASSERT_EQUAL_PTR(l, l2);
+    TEST_ASSERT(strhash_contains(s, s1));
+    TEST_ASSERT(strhash_contains(s, s2));
+    TEST_ASSERT(!strhash_contains(s, s3));
+
     strhash_free(s);
 }
 
@@ -131,6 +161,7 @@ void strhash_test() {
     RUN_TEST(hash_key_test);
     RUN_TEST(strhash_create_free_test);
     RUN_TEST(strhash_contains_test);
+    RUN_TEST(strhash_add_test);
     RUN_TEST(strhash_equal_test);
     RUN_TEST(strhash_from_string_test);
     RUN_TEST(strhash_get_stats_test);
