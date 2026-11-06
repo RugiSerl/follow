@@ -88,21 +88,21 @@ void strhash_equal_test() {
 }
 
 void strhash_from_string_test() {
-    strhash_allocated* s1 = strhash_from_string("a|b|c|d|e|banane|tomate|x|x|u", 2);
-    strhash_allocated* s2 = strhash_from_string("banane|d|c|b|e|e|tomate|a|x|u", 10);
+    strhash* s1 = strhash_from_string("a|b|c|d|e|banane|tomate|x|x|u", 2);
+    strhash* s2 = strhash_from_string("banane|d|c|b|e|e|tomate|a|x|u", 10);
     TEST_ASSERT(strhash_equal(s1, s2));
-    strhash_allocated_free(s1);
-    strhash_allocated_free(s2);
+    strhash_free(s1);
+    strhash_free(s2);
 
     char a[]="a", b[]="b", c[]="c";
-    strhash_allocated* s3 = strhash_from_string("a|b|c", 3);
+    strhash* s3 = strhash_from_string("a|b|c", 3);
     strhash* s4 = strhash_create(3);
     TEST_ASSERT(!strhash_equal(s3, s4));
     strhash_add(s4, a);
     strhash_add(s4, b);
     strhash_add(s4, c);
     TEST_ASSERT(strhash_equal(s3, s4));
-    strhash_allocated_free(s3);
+    strhash_free(s3);
     strhash_free(s4);
 }
 

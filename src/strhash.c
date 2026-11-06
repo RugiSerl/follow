@@ -43,6 +43,13 @@ strhash* strhash_create(size_t capacity) {
 }
 
 void strhash_free(strhash *hashtable) {
+    for (size_t i = 0; i<hashtable->capacity; i++) {
+        s_node* l = hashtable->entries[i];
+        while (l != NULL) {
+            free(l->data);
+            l = l->next;
+        }
+    }
     for (unsigned int i = 0; i<hashtable->capacity; i++) {
         list_destroy(hashtable->entries[i]);
     }
@@ -51,49 +58,54 @@ void strhash_free(strhash *hashtable) {
     free(hashtable);
 }
 
-void strhash_allocated_free(strhash_allocated *hashtable) {
-    for (size_t i = 0; i<hashtable->capacity; i++) {
-        s_node* l = hashtable->entries[i];
-        while (l != NULL) {
-            free(l->data);
-            l = l->next;
-        }
-    }
-    strhash_free(hashtable);
-}
-
-int strhash_add(strhash* hashtable, char* value){
+s_node* strhash_add(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
     size_t l_before = list_length(hashtable->entries[key]);
+    char* value_copy = malloc(strlen(value)+1);
+    strcpy(value_copy, value);
 
     // L'usage de cette fonction est essentiel pour conserver l'ordre dans la liste chaînée.
-    list_orderedAppend(&hashtable->entries[key], compare_string, value);
+    s_node* new_elt = list_orderedAppend(&hashtable->entries[key], compare_string, value_copy);
 
     size_t l_after = list_length(hashtable->entries[key]);
     if (l_before == l_after) {
-       return 0; // On n'a pas ajouté la nouvelle valeur
+        free(value_copy); // On libère la copie qui n'a pas été insérée.
     } else {
         hashtable->entry_sizes[key] = l_after;
         hashtable->size++;
-        return 1;
     }
+    return new_elt;
 }
 
 // L'implémentation de cette fonction est très similaire à celle de strhash_add.
 int strhash_remove(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
-    size_t l_before = list_length(hashtable->entries[key]);
 
-    hashtable->entries[key] = list_remove(hashtable->entries[key],value);
-
-    size_t l_after = list_length(hashtable->entries[key]);
-    if (l_before == l_after) {
-        return 0; // On n'a rien supprimé.
-    } else {
-        hashtable->entry_sizes[key] = l_after;
-        hashtable->size--;
-        return 1;
+    s_node* head = hashtable->entries[key];
+    if (head == NULL) return 0;
+    if (head->next == NULL) {
+        if (strcmp(head->data, value) == 0) {
+            free(head->data);
+            free(head);
+            hashtable->entry_sizes[key] = 0;
+            hashtable->size--;
+            head = NULL;
+            return 1;
+        } else {
+            return 0;
+        }
     }
+    for (; head->next != NULL; head = list_next(head)) {
+        if (strcmp(head->next->data, value) == 0) {
+            free(head->next->data);
+            free(head->next);
+            head->next = head->next->next;
+            hashtable->entry_sizes[key]--;
+            hashtable->size--;
+            return 1;
+        }
+    }
+    return 0; // On n'a rien supprimé.
 }
 
 int strhash_contains(strhash *hashtable, char *value) {
@@ -125,17 +137,13 @@ int strhash_equal(strhash *s1, strhash *s2) {
     return 1;
 }
 
-strhash_allocated* strhash_from_string(const char* string, size_t capacity) {
+strhash* strhash_from_string(const char* string, size_t capacity) {
     strhash* res = strhash_create(capacity);
     char* temp = malloc(strlen(string)+1); // On stocke temporairement string dans temp pour éviter de modifier string
     strcpy(temp, string);
     char* token = strtok(temp, "|");
     while (token != NULL) { // Tant qu'on n'est pas arrivé au bout de la chaîne.
-        char* value = malloc(strlen(token)+1);  // On est obligé d'allouer manuellement chaque élément pour être sûr qu'on a bien une copie.
-        strcpy(value, token);                   // copie dans l'élément value.
-        if (!strhash_add(res, value)) {
-            free(value); // La valeur n'a pas été insérée. On la free maintenant parce qu'elle ne pourra plus être free après sinon.
-        }
+        strhash_add(res, token);
         token = strtok(NULL, "|"); // On passe au token suivant (élément suivant).
     }
     free(temp);

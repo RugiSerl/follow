@@ -9,10 +9,6 @@ typedef struct {
     size_t size;            // Nombre d'éléments dans le tableau.
 } strhash;
 
-// Ajout d'un alias pour permettre de différencier une table de hachage dont les valeurs sont
-// allouées et qu'il faut libérer lorsqu'on libère la structure.
-typedef strhash strhash_allocated ;
-
 typedef struct {
     size_t size;            // Nombre d'éléments dans la table de hachage
     size_t entry_min;       // Nombre minimum d'éléments au sein d'une entrée
@@ -46,14 +42,9 @@ strhash* strhash_create(size_t size);
 void strhash_free(strhash* hashtable);
 
 /**
- * Libère/détruit une table de hachage dont les éléments sont à libérer également.
- */
-void strhash_allocated_free(strhash_allocated* hashtable);
-
-/**
  * Insère un élément dans la table de hachage s'il n'est pas déjà inséré
  */
-int strhash_add(strhash* hashtable, char* value);
+s_node* strhash_add(strhash* hashtable, char* value);
 
 /**
  * Enlève un élément de la table de hachage, s'il est bien dedans.
