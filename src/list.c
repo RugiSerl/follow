@@ -34,12 +34,12 @@ size_t list_length(s_node *node) {
     return len;
 }
 
-int list_contains(s_node *node, int (*compare)(s_node *, void *), void *data) {
-    if (node == NULL)return 0;
+s_node* list_contains(s_node *node, int (*compare)(s_node *, void *), void *data) {
+    if (node == NULL)return NULL;
     s_node* c =node;
     while(c->next!=NULL && compare(c, data)!=0) c=c->next;
-    if(compare(c, data)==0)return 1;
-    return 0;
+    if(compare(c, data)==0)return c;
+    return NULL;
 }
 
 s_node * list_insert(s_node * head, void * data){

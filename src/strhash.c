@@ -69,21 +69,17 @@ void strhash_free(strhash *hashtable) {
 
 char* strhash_add(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
-    size_t l_before = list_length(hashtable->entries[key]);
-    char* value_copy = malloc(strlen(value)+1);
-    strcpy(value_copy, value);
-
-    // L'usage de cette fonction est essentiel pour conserver l'ordre dans la liste chaînée.
-    s_node* new_elt = list_orderedAppend(&hashtable->entries[key], compare_string, value_copy);
-
-    size_t l_after = list_length(hashtable->entries[key]);
-    if (l_before == l_after) {
-        free(value_copy); // On libère la copie qui n'a pas été insérée.
+    s_node* elt;
+    if ((elt = list_contains(hashtable->entries[key], compare_string, value))!=NULL) {
+        return elt->data;
     } else {
-        hashtable->entry_sizes[key] = l_after;
+        char* value_copy = malloc(strlen(value)+1);
+        strcpy(value_copy, value);
+        elt = list_orderedAppend(&hashtable->entries[key], compare_string, value_copy);
+        hashtable->entry_sizes[key]++;
         hashtable->size++;
+        return elt->data;
     }
-    return new_elt->data;
 }
 
 // L'implémentation de cette fonction est très similaire à celle de strhash_add.
@@ -120,7 +116,7 @@ int strhash_remove(strhash* hashtable, char* value){
 
 int strhash_contains(strhash *hashtable, char *value) {
     size_t key = _hash_key(value)%hashtable->capacity;
-    return list_contains(hashtable->entries[key], compare_string, value);
+    return list_contains(hashtable->entries[key], compare_string, value) != NULL;
 }
 
 int strhash_equal(strhash *s1, strhash *s2) {

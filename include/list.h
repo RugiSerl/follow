@@ -39,7 +39,7 @@ size_t list_length(s_node* node);
 /**
  * Vérifie si la liste contient une certaine valeur.
  */
-int list_contains(s_node* node, int(*compare)(s_node *,void *), void* data);
+s_node* list_contains(s_node* node, int(*compare)(s_node *,void *), void* data);
 
 /**
  * Ajoute un élément en tête de liste.
