@@ -80,6 +80,54 @@ void strhash_add_test() {
     strhash_free(s);
 }
 
+void strhash_remove_test() {
+    strhash *s = strhash_create(5), *tmp;
+    char s1[]="test", s2[]="super", s3[]="cool";
+
+    strhash_add(s, s1);
+    strhash_add(s, s2);
+    strhash_add(s, s3);
+
+    tmp = strhash_from_string("test|super|cool", 5);
+    TEST_ASSERT(strhash_equal(s, tmp));
+    strhash_free(tmp);
+
+    TEST_ASSERT_EQUAL_INT(1, strhash_remove(s, s1));
+
+    tmp = strhash_from_string("super|cool", 5);
+    TEST_ASSERT(strhash_equal(s, tmp));
+    strhash_free(tmp);
+
+    TEST_ASSERT_EQUAL_INT(0, strhash_remove(s, "pasdanslaliste"));
+
+    tmp = strhash_from_string("super|cool", 5);
+    TEST_ASSERT(strhash_equal(s, tmp));
+    strhash_free(tmp);
+
+    strhash_add(s, "rara");
+    strhash_add(s, "toto");
+
+    TEST_ASSERT_EQUAL_INT(1, strhash_remove(s, "super"));
+
+    tmp = strhash_from_string("cool|rara|toto", 5);
+    TEST_ASSERT(strhash_equal(s, tmp));
+    strhash_free(tmp);
+
+    TEST_ASSERT_EQUAL_INT(0, strhash_remove(s, "super"));
+
+    tmp = strhash_from_string("cool|rara|toto", 5);
+    TEST_ASSERT(strhash_equal(s, tmp));
+    strhash_free(tmp);
+
+    TEST_ASSERT_EQUAL_INT(1, strhash_remove(s, "toto"));
+
+    tmp = strhash_from_string("cool|rara", 5);
+    TEST_ASSERT(strhash_equal(s, tmp));
+    strhash_free(tmp);
+
+    strhash_free(s);
+}
+
 void strhash_equal_test() {
     strhash* s1 = strhash_create(10);
     strhash* s2 = strhash_create(10);
@@ -162,6 +210,7 @@ void strhash_test() {
     RUN_TEST(strhash_create_free_test);
     RUN_TEST(strhash_contains_test);
     RUN_TEST(strhash_add_test);
+    RUN_TEST(strhash_remove_test);
     RUN_TEST(strhash_equal_test);
     RUN_TEST(strhash_from_string_test);
     RUN_TEST(strhash_get_stats_test);

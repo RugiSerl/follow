@@ -89,7 +89,7 @@ int strhash_remove(strhash* hashtable, char* value){
             free(head);
             hashtable->entry_sizes[key] = 0;
             hashtable->size--;
-            head = NULL;
+            hashtable->entries[key] = NULL;
             return 1;
         } else {
             return 0;
@@ -97,9 +97,10 @@ int strhash_remove(strhash* hashtable, char* value){
     }
     for (; head->next != NULL; head = list_next(head)) {
         if (strcmp(head->next->data, value) == 0) {
+            s_node* tmp = head->next->next;
             free(head->next->data);
             free(head->next);
-            head->next = head->next->next;
+            head->next = tmp;
             hashtable->entry_sizes[key]--;
             hashtable->size--;
             return 1;
