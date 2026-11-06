@@ -103,21 +103,27 @@ void list_next_test() {
     free(list);
 }
 
-void list_contains_test() {
+void list_find_test() {
     s_node* l = list_create();
     int d = 5, e = 10, f = 20;
-    TEST_ASSERT(!list_contains(l, compare_int_basic, &d));
+    TEST_ASSERT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &d));
     l = list_insert(l, &d);
-    TEST_ASSERT(list_contains(l, compare_int_basic, &d));
-    TEST_ASSERT(!list_contains(l, compare_int_basic, &e));
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &d));
+    TEST_ASSERT_EQUAL_PTR(&d, list_find(l, compare_int_basic, &d)->data);
+    TEST_ASSERT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &e));
     l = list_insert(l, &e);
-    TEST_ASSERT(list_contains(l, compare_int_basic, &d));
-    TEST_ASSERT(list_contains(l, compare_int_basic, &e));
-    TEST_ASSERT(!list_contains(l, compare_int_basic, &f));
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &d));
+    TEST_ASSERT_EQUAL_PTR(&d, list_find(l, compare_int_basic, &d)->data);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &e));
+    TEST_ASSERT_EQUAL_PTR(&e, list_find(l, compare_int_basic, &e)->data);
+    TEST_ASSERT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &f));
     l = list_insert(l, &f);
-    TEST_ASSERT(list_contains(l, compare_int_basic, &d));
-    TEST_ASSERT(list_contains(l, compare_int_basic, &e));
-    TEST_ASSERT(list_contains(l, compare_int_basic, &f));
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &d));
+    TEST_ASSERT_EQUAL_PTR(&d, list_find(l, compare_int_basic, &d)->data);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &e));
+    TEST_ASSERT_EQUAL_PTR(&e, list_find(l, compare_int_basic, &e)->data);
+    TEST_ASSERT_NOT_EQUAL_PTR(NULL, list_find(l, compare_int_basic, &f));
+    TEST_ASSERT_EQUAL_PTR(&f, list_find(l, compare_int_basic, &f)->data);
 
     list_destroy(l);
 }
@@ -270,7 +276,7 @@ void list_test() {
     RUN_TEST(list_get_data_test);
     RUN_TEST(list_set_data_test);
     RUN_TEST(list_next_test);
-    RUN_TEST(list_contains_test);
+    RUN_TEST(list_find_test);
     RUN_TEST(list_append_test);
     RUN_TEST(list_orderedAppend_test);
     RUN_TEST(list_headRemove_test);

@@ -31,9 +31,10 @@ void list_set_data(s_node * node, void * data);
 s_node * list_next(s_node * node);
 
 /**
- * Vérifie si la liste contient une certaine valeur.
+ * Trouve un noeud contenant une certaine valeur.
+ * Renvoie NULL si cette valeur n'est pas présente.
  */
-s_node* list_contains(s_node* node, int(*compare)(s_node *,void *), void* data);
+s_node* list_find(s_node* node, int(*compare)(s_node *,void *), void* data);
 
 /**
  * Ajoute un élément en tête de liste.

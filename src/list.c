@@ -23,7 +23,7 @@ s_node * list_next(s_node * node){
     return node->next;
 }
 
-s_node* list_contains(s_node *node, int (*compare)(s_node *, void *), void *data) {
+s_node* list_find(s_node *node, int (*compare)(s_node *, void *), void *data) {
     if (node == NULL)return NULL;
     s_node* c =node;
     while(c->next!=NULL && compare(c, data)!=0) c=c->next;

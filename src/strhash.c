@@ -70,7 +70,7 @@ void strhash_free(strhash *hashtable) {
 char* strhash_add(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
     s_node* elt;
-    if ((elt = list_contains(hashtable->entries[key], compare_string, value))!=NULL) {
+    if ((elt = list_find(hashtable->entries[key], compare_string, value))!=NULL) {
         return elt->data;
     } else {
         char* value_copy = malloc(strlen(value)+1);
@@ -116,7 +116,7 @@ int strhash_remove(strhash* hashtable, char* value){
 
 int strhash_contains(strhash *hashtable, char *value) {
     size_t key = _hash_key(value)%hashtable->capacity;
-    return list_contains(hashtable->entries[key], compare_string, value) != NULL;
+    return list_find(hashtable->entries[key], compare_string, value) != NULL;
 }
 
 int strhash_equal(strhash *s1, strhash *s2) {
