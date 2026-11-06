@@ -31,12 +31,6 @@ void list_set_data(s_node * node, void * data);
 s_node * list_next(s_node * node);
 
 /**
- * Récupère la taille de la liste chaînée.
- * Si node vaut NULL, la taille est de 0.
- */
-size_t list_length(s_node* node);
-
-/**
  * Vérifie si la liste contient une certaine valeur.
  */
 s_node* list_contains(s_node* node, int(*compare)(s_node *,void *), void* data);

@@ -103,23 +103,6 @@ void list_next_test() {
     free(list);
 }
 
-void list_length_test() {
-    s_node* l = list_create();
-    int d = 5, e = 10, f = 20;
-    TEST_ASSERT_EQUAL_INT(0, list_length(l));
-    l = list_insert(l, &d);
-    TEST_ASSERT(list_length(l));
-    l = list_insert(l, &e);
-    TEST_ASSERT_EQUAL_INT(2, list_length(l));
-    l = list_remove(l, &d);
-    TEST_ASSERT(list_length(l));
-    l = list_insert(l, &f);
-    TEST_ASSERT_EQUAL_INT(2, list_length(l));
-    l = list_insert(l, &e);
-    TEST_ASSERT_EQUAL_INT(3, list_length(l));
-    list_destroy(l);
-}
-
 void list_contains_test() {
     s_node* l = list_create();
     int d = 5, e = 10, f = 20;
@@ -287,7 +270,6 @@ void list_test() {
     RUN_TEST(list_get_data_test);
     RUN_TEST(list_set_data_test);
     RUN_TEST(list_next_test);
-    RUN_TEST(list_length_test);
     RUN_TEST(list_contains_test);
     RUN_TEST(list_append_test);
     RUN_TEST(list_orderedAppend_test);

@@ -23,17 +23,6 @@ s_node * list_next(s_node * node){
     return node->next;
 }
 
-size_t list_length(s_node *node) {
-    if(node==NULL)return 0;
-    s_node * c=node;
-    size_t len=1;
-    while(c->next!=NULL){
-        len++;
-        c=c->next;
-    }
-    return len;
-}
-
 s_node* list_contains(s_node *node, int (*compare)(s_node *, void *), void *data) {
     if (node == NULL)return NULL;
     s_node* c =node;
