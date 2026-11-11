@@ -82,7 +82,6 @@ char* strhash_add(strhash* hashtable, char* value){
     }
 }
 
-// L'implémentation de cette fonction est très similaire à celle de strhash_add.
 int strhash_remove(strhash* hashtable, char* value){
     size_t key = _hash_key(value)%hashtable->capacity;
 
