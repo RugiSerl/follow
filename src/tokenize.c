@@ -4,21 +4,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 char* openfile(char* src){
-    unsigned int nb=0;
     FILE* f=fopen(src,"r");
     if(f == NULL) return NULL;
+    struct stat st;
+    stat(src,&st);
+    char* dest=malloc((sizeof(char)*st.st_size) +1);
     char c=fgetc(f);
-    while(c!=EOF) nb++; //première boucle pour connaitre le nombre de caractères dans le fichier
-    char* dest=malloc(sizeof(char)*nb +1);
-    rewind(f);
-    c=fgetc(f);
     unsigned int i=0;
-    while(c!=EOF){ //deuxième boucle pour remplir la chaine de caractère
+    while(c != EOF){ //Boucle pour remplir la chaine de caractère
         dest[i++]=c;
+        c=fgetc(f);
     }
     fclose(f);
+    dest[i]='\0';
     return dest;
 }
 
