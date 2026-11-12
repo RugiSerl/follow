@@ -4,6 +4,7 @@
 
 extern void list_test();
 extern void strhash_test();
+extern void tokenize_test();
 
 void setUp() {
 }
@@ -16,5 +17,6 @@ int main() {
     UNITY_BEGIN();
     list_test();
     strhash_test();
+    tokenize_test();
     return UNITY_END();
 }

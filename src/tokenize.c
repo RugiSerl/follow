@@ -1,6 +1,7 @@
 #include "tokenize.h"
 #include "strhash.h"
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -23,9 +24,12 @@ char* openfile(char* src){
 
 
 token_list* token_list_create(size_t length) {
-    token_list* res = malloc(sizeof(token_list));
+    token_list* res = (token_list*)malloc(sizeof(token_list));
     res->length = length;
-    res->tokens = malloc(sizeof(token) * length);
+    res->tokens = (token**)malloc(sizeof(token*) * length);
+    for (int i = 0; i<length; i++) {
+        res->tokens[i] = NULL;
+    }
     return res;
 }
 
@@ -42,7 +46,7 @@ int is_delimiter(char c) {
 }
 
 token* token_create(char *text, size_t *offset, strhash *stockage) {
-    token* t = malloc(sizeof(token));
+    token* t = (token*)malloc(sizeof(token));
     t->textOffset = *offset;
     unsigned int space_length = 0;
 
@@ -69,8 +73,10 @@ token* token_create(char *text, size_t *offset, strhash *stockage) {
     if (t->type == SHORT_SPACE) {
         strncpy(t->data.space, &text[t->textOffset], data_size);
     } else {
-        char* str = malloc(data_size+1);
+        char* str = (char*)malloc(sizeof(char)*(data_size+1));
         strncpy(str, &text[t->textOffset], data_size);
+        str[data_size] = '\0';
+        printf("%zu\n", data_size);
         t->data.word = strhash_add(stockage, str);
         free(str);
     }
