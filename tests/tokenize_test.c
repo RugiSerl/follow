@@ -13,9 +13,10 @@ void token_list_create_free_test() {
 
 void token_create_test() {
     strhash* s = strhash_create(10);
+    token_list* t = token_list_create(20);
     size_t offset = 0;
-    token* t = token_create("Ceci est     une  phrase \t la la\n     la", &offset, s);
-    token_free(t);
+    t->tokens[0] = token_create("Ceci est     une  phrase \t la la\n     la", &offset, s);
+    token_list_free(t);
     strhash_free(s);
 }
 

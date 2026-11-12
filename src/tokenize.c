@@ -76,7 +76,6 @@ token* token_create(char *text, size_t *offset, strhash *stockage) {
         char* str = (char*)malloc(sizeof(char)*(data_size+1));
         strncpy(str, &text[t->textOffset], data_size);
         str[data_size] = '\0';
-        printf("%zu\n", data_size);
         t->data.word = strhash_add(stockage, str);
         free(str);
     }
