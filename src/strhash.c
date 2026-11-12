@@ -76,8 +76,7 @@ char* strhash_add(strhash* hashtable, char* value){
     if ((elt = list_find(hashtable->entries[key], compare_string, value))!=NULL) {
         return elt->data;
     } else {
-        char* value_copy = malloc(strlen(value)+1);
-        strcpy(value_copy, value);
+        char* value_copy = strdup(value);
         elt = list_orderedAppend(&hashtable->entries[key], compare_string, value_copy);
         hashtable->entry_sizes[key]++;
         hashtable->size++;
