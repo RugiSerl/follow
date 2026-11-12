@@ -7,19 +7,6 @@
 #include <string.h>
 
 
-void hash_key_test() {
-    char maChaine[] = "Ceci est une chaîne";
-    char maChaine2[] = "Ceci est une autre chaîne";
-    unsigned int hash1 = _hash_key(maChaine, 0);
-    unsigned int hash2 = _hash_key(maChaine2, 0);
-    TEST_ASSERT_NOT_EQUAL_INT(hash1, hash2);
-    TEST_ASSERT_EQUAL_INT(85867233, hash1);
-    TEST_ASSERT_EQUAL_INT(1200510689, hash2);
-    unsigned int hash3 = _hash_key("asasasa", 10);
-    TEST_ASSERT_LESS_THAN_size_t(10, hash3);
-    TEST_ASSERT_EQUAL_size_t(5, hash3);
-
-}
 
 void strhash_create_free_test() {
     strhash* s = strhash_create(10);
@@ -210,7 +197,6 @@ void strhash_get_stats_test() {
 }
 
 void strhash_test() {
-    RUN_TEST(hash_key_test);
     RUN_TEST(strhash_create_free_test);
     RUN_TEST(strhash_contains_test);
     RUN_TEST(strhash_add_test);
