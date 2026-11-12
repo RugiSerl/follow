@@ -7,7 +7,7 @@
 
 char* openfile(char* src){
     unsigned int nb=0;
-    FILE f=fopen(src,"r");
+    FILE* f=fopen(src,"r");
     if(f == NULL) return NULL;
     char c=fgetc(f);
     while(c!=EOF) nb++; //première boucle pour connaitre le nombre de caractères dans le fichier
