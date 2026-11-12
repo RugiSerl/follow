@@ -23,7 +23,7 @@ typedef struct {
 /**
  * Génère un hash à partir d'une chaîne de caractères en utilisant un algorithme basique.
  */
-unsigned int _hash_key(char* str);
+unsigned int _hash_key(char* str, size_t max);
 
 /**
  * Fonction de comparaison pour les chaînes de caractères.

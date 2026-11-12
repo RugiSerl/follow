@@ -15,11 +15,14 @@ int node_string_to_string(s_node * node, char *buffer, int size) {
 	return (str_length >= size);  // voir man snprintf (return value)
 }
 
-unsigned int _hash_key(char* str) {
+unsigned int _hash_key(char* str, size_t max) {
     unsigned int key = 0;
     while (*str != '\0') {
         key = key * 2 + (unsigned char)*str;
         str++;
+    }
+    if (max > 0) {
+        key = key % max;
     }
     return key;
 }
@@ -68,7 +71,7 @@ void strhash_free(strhash *hashtable) {
 }
 
 char* strhash_add(strhash* hashtable, char* value){
-    size_t key = _hash_key(value)%hashtable->capacity;
+    size_t key = _hash_key(value, hashtable->capacity);
     s_node* elt;
     if ((elt = list_find(hashtable->entries[key], compare_string, value))!=NULL) {
         return elt->data;
@@ -83,7 +86,7 @@ char* strhash_add(strhash* hashtable, char* value){
 }
 
 int strhash_remove(strhash* hashtable, char* value){
-    size_t key = _hash_key(value)%hashtable->capacity;
+    size_t key = _hash_key(value, hashtable->capacity);
 
     s_node* head = hashtable->entries[key];
     if (head == NULL) return 0;
@@ -114,7 +117,7 @@ int strhash_remove(strhash* hashtable, char* value){
 }
 
 int strhash_contains(strhash *hashtable, char *value) {
-    size_t key = _hash_key(value)%hashtable->capacity;
+    size_t key = _hash_key(value, hashtable->capacity);
     return list_find(hashtable->entries[key], compare_string, value) != NULL;
 }
 
