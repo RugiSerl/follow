@@ -61,8 +61,6 @@ void strhash_free(strhash *hashtable) {
             free(l->data);
             l = l->next;
         }
-    }
-    for (unsigned int i = 0; i<hashtable->capacity; i++) {
         list_destroy(hashtable->entries[i]);
     }
     free(hashtable->entries);
