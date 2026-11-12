@@ -7,18 +7,18 @@
 
 char* openfile(char* src){
     unsigned int nb=0;
-    fopen(src);
-    if(src == NULL) return NULL;
-    char c=fgetc(src);
-    while(c!='EOF') nb++; //première boucle pour connaitre le nombre de caractères dans le fichier
+    FILE f=fopen(src,"r");
+    if(f == NULL) return NULL;
+    char c=fgetc(f);
+    while(c!=EOF) nb++; //première boucle pour connaitre le nombre de caractères dans le fichier
     char* dest=malloc(sizeof(char)*nb +1);
-    rewind(src);
-    c=fgetc(src);
+    rewind(f);
+    c=fgetc(f);
     unsigned int i=0;
-    while(c!='EOF'){ //deuxième boucle pour remplir la chaine de caractère
+    while(c!=EOF){ //deuxième boucle pour remplir la chaine de caractère
         dest[i++]=c;
     }
-    fclose(src);
+    fclose(f);
     return dest;
 }
 
