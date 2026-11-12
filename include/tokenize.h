@@ -19,10 +19,10 @@ typedef struct {
 /**
  * Transforme un texte en une liste de token.
  */
-token_list* tokenize_text(char* text, strhash stockage);
+token_list* tokenize_text(char* text, strhash* stockage);
 
 /**
- * Libère les données d'une table de hachage.
+ * Alloue une table de hachage.
  */
 token_list* token_list_create(size_t length);
 
