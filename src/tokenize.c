@@ -4,6 +4,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+char* openfile(char* src){
+    unsigned int nb=0;
+    fopen(src);
+    if(src == NULL) return NULL;
+    char c=fgetc(src);
+    while(c!='EOF') nb++; //première boucle pour connaitre le nombre de caractères dans le fichier
+    char* dest=malloc(sizeof(char)*nb +1);
+    rewind(src);
+    c=fgetc(src);
+    unsigned int i=0;
+    while(c!='EOF'){ //deuxième boucle pour remplir la chaine de caractère
+        dest[i++]=c;
+    }
+    fclose(src);
+    return dest;
+}
+
+
 token_list* token_list_create(size_t length) {
     token_list* res = malloc(sizeof(token_list));
     res->length = length;

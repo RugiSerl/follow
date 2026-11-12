@@ -23,6 +23,11 @@ typedef struct {
 } token_list;
 
 /**
+ * Ouvre un fichier et le transforme en chaine de caractères
+ */
+char* openfile(char* src);
+
+/**
  * Transforme un texte en une liste de token.
  */
 token_list* tokenize_text(char* text, strhash* stockage);
