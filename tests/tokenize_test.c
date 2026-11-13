@@ -58,7 +58,21 @@ void token_create_test() {
     strhash_free(s);
 }
 
+void tokenize_text_test() {
+    strhash* s = strhash_create(10);
+    char text[] = "Ceci est     une  phrase   ";
+    token_list* t = tokenize_text(text, s);
+
+    strhash* temp = strhash_from_string("Ceci|est|     |une|phrase", 10);
+    TEST_ASSERT(strhash_equal(s, temp));
+    strhash_free(temp);
+
+    token_list_free(t);
+    strhash_free(s);
+}
+
 void tokenize_test() {
-    RUN_TEST(token_list_create_free_test);
     RUN_TEST(token_create_test);
+    RUN_TEST(token_list_create_free_test);
+    RUN_TEST(tokenize_text_test);
 }
