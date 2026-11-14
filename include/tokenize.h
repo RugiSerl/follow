@@ -20,6 +20,7 @@ typedef struct {
 typedef struct {
     token** tokens;
     size_t length;
+    size_t capacity;
 } token_list;
 
 /**
@@ -33,14 +34,19 @@ char* openfile(char* src);
 token_list* tokenize_text(char* text, strhash* stockage);
 
 /**
- * Alloue une table de hachage.
+ * Alloue une liste de tokens.
  */
 token_list* token_list_create(size_t length);
 
 /**
- * Libère les données d'une table de hachage.
+ * Libère les données d'une liste de tokens.
  */
 void token_list_free(token_list* list);
+
+/**
+ * Ajoute un élément dans la liste de tokens et réalloue la liste si besoin.
+ */
+int token_list_add(token_list* list, token* token);
 
 /**
  * Crée un token à partir du texte qui lui est donné en entrée et de l'emplacement (offset)

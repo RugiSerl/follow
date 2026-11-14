@@ -7,39 +7,52 @@
 #include <sys/stat.h>
 
 char* openfile(char* src){
-    FILE* f=fopen(src,"r");
-    if(f == NULL) return NULL;
+    FILE* f = fopen(src,"r");
+    if (f == NULL) return NULL;
     struct stat st;
     stat(src,&st);
-    char* dest=malloc((sizeof(char)*st.st_size) +1);
-    char c=fgetc(f);
-    unsigned int i=0;
-    while(c != EOF){ //Boucle pour remplir la chaine de caractère
-        dest[i++]=c;
-        c=fgetc(f);
+    char* dest = malloc((sizeof(char) * st.st_size) + 1);
+    char c = fgetc(f);
+    unsigned int i = 0;
+    while (c != EOF) { // Boucle pour remplir la chaine de caractère.
+        dest[i++] = c;
+        c = fgetc(f);
     }
     fclose(f);
-    dest[i]='\0';
+    dest[i] = '\0';
     return dest;
 }
 
 
-token_list* token_list_create(size_t length) {
+token_list* token_list_create(size_t capacity) {
     token_list* res = (token_list*)malloc(sizeof(token_list));
-    res->length = length;
-    res->tokens = (token**)malloc(sizeof(token*) * length);
-    for (int i = 0; i<length; i++) {
+    res->length = 0;
+    res->capacity = capacity;
+    res->tokens = (token**)malloc(sizeof(token*) * capacity);
+    for (int i = 0; i<capacity; i++) {
         res->tokens[i] = NULL;
     }
     return res;
 }
 
 void token_list_free(token_list* list) {
-    for (int i = 0; i<list->length; i++) {
+    for (int i = 0; i<list->capacity; i++) {
         token_free(list->tokens[i]);
     }
     free(list->tokens);
     free(list);
+}
+
+int token_list_add(token_list *list, token* t) {
+    if (list->length+1 > list->capacity) {
+        list->capacity *= 2;
+        list->tokens = realloc(list->tokens, sizeof(token*) * list->capacity);
+        if (list->tokens == NULL) {
+            return 0;
+        }
+    }
+    list->tokens[list->length++] = t;
+    return 1;
 }
 
 int is_delimiter(char c) {
@@ -90,10 +103,9 @@ void token_free(token *token) {
 
 token_list* tokenize_text(char *text, strhash *stockage) {
     token_list* res = token_list_create(100);
-    size_t token_count = 0;
     size_t i = 0;
     while (text[i] != '\0') {
-        res->tokens[token_count++] = token_create(text, &i, stockage);
+        token_list_add(res, token_create(text, &i, stockage));
     }
     return res;
 }
