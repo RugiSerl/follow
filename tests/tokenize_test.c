@@ -85,6 +85,23 @@ void text_analysis_test() {
     text_analysis* t = text_analysis_create("assets/test_ref.txt", "assets/test_src.txt");
     strhash* temp = strhash_from_string("ceci|n'est|pas|un|texte|génial,|salut.|est|bonjour,|super|au|revoir.", 10);
     TEST_ASSERT(strhash_equal(t->s, temp));
+
+    TEST_ASSERT_EQUAL_INT(WORD, t->ref_tokens->tokens[0]->type);
+    TEST_ASSERT_EQUAL_STRING("bonjour,", t->ref_tokens->tokens[0]->data.word);
+
+    TEST_ASSERT_EQUAL_INT(SHORT_SPACE, t->ref_tokens->tokens[1]->type);
+    TEST_ASSERT(strncmp(" ", t->ref_tokens->tokens[1]->data.space, 1) == 0);
+
+    TEST_ASSERT_EQUAL_INT(WORD, t->ref_tokens->tokens[2]->type);
+    TEST_ASSERT_EQUAL_STRING("ceci", t->ref_tokens->tokens[2]->data.word);
+
+    TEST_ASSERT_EQUAL_INT(WORD, t->src_tokens->tokens[0]->type);
+    TEST_ASSERT_EQUAL_STRING("ceci", t->src_tokens->tokens[0]->data.word);
+
+    // Les deux "ceci" doivent pointer le même endroit en mémoire (dans la table de hachage).
+    TEST_ASSERT_EQUAL_PTR( t->src_tokens->tokens[0]->data.word, t->ref_tokens->tokens[2]->data.word);
+
+
     strhash_free(temp);
     text_analysis_free(t);
 }
