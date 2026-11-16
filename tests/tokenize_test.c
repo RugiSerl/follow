@@ -72,13 +72,30 @@ void tokenize_text_test() {
     strhash_free(s);
 }
 
+void text_analysis_create_free_test() {
+    text_analysis* t = text_analysis_create("fichierinexistant", "fichierinexistant");
+    TEST_ASSERT_NULL(t);
+    // Remarque : pas besoin de free si le chargement a échoué
+
+    text_analysis* t2 = text_analysis_create("assets/test_ref.txt", "assets/test_src.txt");
+    text_analysis_free(t2);
+}
+
+void text_analysis_test() {
+    text_analysis* t = text_analysis_create("assets/test_ref.txt", "assets/test_src.txt");
+    strhash* temp = strhash_from_string("ceci|n'est|pas|un|texte|génial,|salut.|est|bonjour,|super|au|revoir.", 10);
+    TEST_ASSERT(strhash_equal(t->s, temp));
+    strhash_free(temp);
+    text_analysis_free(t);
+}
+
 void load_text_analysis_test() {
     // TODO
 }
 void openfile_test(){
-    char* test1 = openfile("tests/fichier_inexistant.txt");
+    char* test1 = openfile("assets/fichier_inexistant.txt");
     TEST_ASSERT_EQUAL_PTR(NULL,test1);
-    char* test2 = openfile("tests/test_1_2_3.txt");
+    char* test2 = openfile("assets/test_1_2_3.txt");
     TEST_ASSERT_EQUAL_STRING("test_1_2_3",test2);
     free(test2);
 }
@@ -111,6 +128,8 @@ void tokenize_test() {
     RUN_TEST(token_create_test);
     RUN_TEST(token_list_create_free_test);
     RUN_TEST(tokenize_text_test);
+    RUN_TEST(text_analysis_create_free_test);
+    RUN_TEST(text_analysis_test);
     RUN_TEST(load_text_analysis_test);
     RUN_TEST(openfile_test);
     RUN_TEST(token_list_add_test);

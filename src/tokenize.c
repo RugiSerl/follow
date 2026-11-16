@@ -10,17 +10,23 @@ text_analysis* text_analysis_create(char *ref_path, char *src_path) {
     text_analysis* t = (text_analysis*) malloc(sizeof(text_analysis));
     t->ref = openfile(ref_path);
     t->src = openfile(src_path);
+    t->s = strhash_create(32);
     if (t->ref == NULL || t->src == NULL) {
-        fprintf(stderr, "Erreur lors du chargement des fichiers");
+        free(t->ref);
+        free(t->src);
+        strhash_free(t->s);
+        free(t);
         return NULL;
     }
     t->ref_tokens = token_list_create(32);
     t->src_tokens = token_list_create(32);
     tokenize_text(t->ref, t->s, t->ref_tokens);
     tokenize_text(t->src, t->s, t->src_tokens);
+    return t;
 }
 
 void text_analysis_free(text_analysis *t) {
+    if (t == NULL) return;
     strhash_free(t->s);
     token_list_free(t->ref_tokens);
     token_list_free(t->src_tokens);
@@ -59,6 +65,7 @@ token_list* token_list_create(size_t capacity) {
 }
 
 void token_list_free(token_list* list) {
+    if (list == NULL) return;
     for (int i = 0; i<list->capacity; i++) {
         token_free(list->tokens[i]);
     }
@@ -88,7 +95,7 @@ token* token_create(char *text, size_t *offset, strhash *stockage) {
     unsigned int space_length = 0;
 
     // Détermination du type et augmentation de offset pour arriver à la fin du mot/space.
-    if (text[*offset] == ' ') {
+    if (is_delimiter(text[*offset])) {
         while (text[*offset] != '\0' && is_delimiter(text[*offset])) {
             (*offset)++;
             space_length++;
