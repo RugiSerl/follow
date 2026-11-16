@@ -75,10 +75,18 @@ void tokenize_text_test() {
 void load_text_analysis_test() {
     // TODO
 }
+void openfile_test(){
+    char* test1 = openfile("tests/fichier_inexistant.txt");
+    TEST_ASSERT_EQUAL_PTR(NULL,test1);
+    char* test2 = openfile("tests/test_1_2_3.txt");
+    TEST_ASSERT_EQUAL_STRING("test_1_2_3",test2);
+    free(test2);
+}
 
 void tokenize_test() {
     RUN_TEST(token_create_test);
     RUN_TEST(token_list_create_free_test);
     RUN_TEST(tokenize_text_test);
     RUN_TEST(load_text_analysis_test);
+    RUN_TEST(openfile_test);
 }
