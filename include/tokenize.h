@@ -23,6 +23,24 @@ typedef struct {
     size_t capacity;
 } token_list;
 
+typedef struct {
+    char* ref;
+    char* src;
+    strhash* s;
+    token_list* ref_tokens;
+    token_list* src_tokens;
+} text_analysis;
+
+/**
+ * Stocke les liste de tokens des textes.
+ */
+text_analysis* text_analysis_create(char* ref_path, char* src_path);
+
+/**
+ * Libère les données d'une analyse de texte.
+ */
+void text_analysis_free(text_analysis* t);
+
 /**
  * Ouvre un fichier et le transforme en chaine de caractères
  */
@@ -31,7 +49,7 @@ char* openfile(char* src);
 /**
  * Transforme un texte en une liste de token.
  */
-token_list* tokenize_text(char* text, strhash* stockage);
+void tokenize_text(char* text, strhash* stockage, token_list* res);
 
 /**
  * Alloue une liste de tokens.

@@ -6,6 +6,29 @@
 #include <string.h>
 #include <sys/stat.h>
 
+text_analysis* text_analysis_create(char *ref_path, char *src_path) {
+    text_analysis* t = (text_analysis*) malloc(sizeof(text_analysis));
+    t->ref = openfile(ref_path);
+    t->src = openfile(src_path);
+    if (t->ref == NULL || t->src == NULL) {
+        fprintf(stderr, "Erreur lors du chargement des fichiers");
+        return NULL;
+    }
+    t->ref_tokens = token_list_create(32);
+    t->src_tokens = token_list_create(32);
+    tokenize_text(t->ref, t->s, t->ref_tokens);
+    tokenize_text(t->src, t->s, t->src_tokens);
+}
+
+void text_analysis_free(text_analysis *t) {
+    strhash_free(t->s);
+    token_list_free(t->ref_tokens);
+    token_list_free(t->src_tokens);
+    free(t->ref);
+    free(t->src);
+    free(t);
+}
+
 char* openfile(char* src){
     FILE* f = fopen(src,"r");
     if (f == NULL) return NULL;
@@ -101,11 +124,9 @@ void token_free(token *token) {
     free(token);
 }
 
-token_list* tokenize_text(char *text, strhash *stockage) {
-    token_list* res = token_list_create(100);
+void tokenize_text(char *text, strhash *stockage, token_list* res) {
     size_t i = 0;
     while (text[i] != '\0') {
         token_list_add(res, token_create(text, &i, stockage));
     }
-    return res;
 }
