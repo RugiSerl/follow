@@ -89,9 +89,6 @@ void text_analysis_test() {
     text_analysis_free(t);
 }
 
-void load_text_analysis_test() {
-    // TODO
-}
 void openfile_test(){
     char* test1 = openfile("assets/fichier_inexistant.txt");
     TEST_ASSERT_EQUAL_PTR(NULL,test1);
@@ -130,7 +127,6 @@ void tokenize_test() {
     RUN_TEST(tokenize_text_test);
     RUN_TEST(text_analysis_create_free_test);
     RUN_TEST(text_analysis_test);
-    RUN_TEST(load_text_analysis_test);
     RUN_TEST(openfile_test);
     RUN_TEST(token_list_add_test);
 }
