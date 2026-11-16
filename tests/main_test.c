@@ -5,6 +5,7 @@
 extern void list_test();
 extern void strhash_test();
 extern void tokenize_test();
+extern void plsc_test();
 
 void setUp() {
 }
