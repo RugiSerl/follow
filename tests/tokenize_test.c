@@ -84,7 +84,7 @@ void text_analysis_create_free_test() {
 void text_analysis_test() {
     text_analysis* t = text_analysis_create("assets/test_ref.txt", "assets/test_src.txt");
     strhash* temp = strhash_from_string("ceci|n'est|pas|un|texte|génial,|salut.|est|bonjour,|super|au|revoir.", 10);
-    TEST_ASSERT(strhash_equal(t->s, temp));
+    TEST_ASSERT(strhash_equal(t->t_hash , temp));
 
     TEST_ASSERT_EQUAL_INT(WORD, t->ref_tokens->tokens[0]->type);
     TEST_ASSERT_EQUAL_STRING("bonjour,", t->ref_tokens->tokens[0]->data.word);

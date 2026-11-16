@@ -10,24 +10,24 @@ text_analysis* text_analysis_create(char *ref_path, char *src_path) {
     text_analysis* t = (text_analysis*) malloc(sizeof(text_analysis));
     t->ref = openfile(ref_path);
     t->src = openfile(src_path);
-    t->s = strhash_create(32);
+    t->t_hash = strhash_create(32);
     if (t->ref == NULL || t->src == NULL) {
         free(t->ref);
         free(t->src);
-        strhash_free(t->s);
+        strhash_free(t->t_hash);
         free(t);
         return NULL;
     }
     t->ref_tokens = token_list_create(32);
     t->src_tokens = token_list_create(32);
-    tokenize_text(t->ref, t->s, t->ref_tokens);
-    tokenize_text(t->src, t->s, t->src_tokens);
+    tokenize_text(t->ref, t->t_hash, t->ref_tokens);
+    tokenize_text(t->src, t->t_hash, t->src_tokens);
     return t;
 }
 
 void text_analysis_free(text_analysis *t) {
     if (t == NULL) return;
-    strhash_free(t->s);
+    strhash_free(t->t_hash);
     token_list_free(t->ref_tokens);
     token_list_free(t->src_tokens);
     free(t->ref);

@@ -26,7 +26,7 @@ typedef struct {
 typedef struct {
     char* ref;
     char* src;
-    strhash* s;
+    strhash* t_hash;
     token_list* ref_tokens;
     token_list* src_tokens;
 } text_analysis;
