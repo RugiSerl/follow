@@ -42,7 +42,7 @@ void plsc_aux(int_matrix* matrix, token_list* ref_tokens, token_list* src_tokens
     if (i == 0 || j == 0) {
         matrix->data[i][j] = 0;
     } else if (matrix->data[i][j] == -1) {
-        if (token_equals(ref_tokens->tokens[i], ref_tokens->tokens[j])) {
+        if (token_equals(ref_tokens->tokens[i], src_tokens->tokens[j])) {
             plsc_aux(matrix, ref_tokens, src_tokens, i-1, j-1);
             matrix->data[i][j] = matrix->data[i-1][j-1] + 1;
         } else {
