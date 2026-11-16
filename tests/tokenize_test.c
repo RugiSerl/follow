@@ -93,12 +93,14 @@ void token_list_add_test(){
     token* t1 = token_create(text, &offset, s);
     token* t2 = token_create(text, &offset, s);
 
-    
+
     TEST_ASSERT_EQUAL_INT(0,t_list->length);
     TEST_ASSERT_EQUAL_INT(1,token_list_add(t_list,t1));
     TEST_ASSERT_EQUAL_INT(1,t_list->length);
     TEST_ASSERT_EQUAL_INT(1,token_list_add(t_list,t2));
     TEST_ASSERT_EQUAL_INT(2,t_list->length);
+    TEST_ASSERT_EQUAL_INT(1,token_list_add(t_list,NULL));
+    TEST_ASSERT_EQUAL_INT(3,t_list->length);
 
     strhash_free(s);
     token_list_free(t_list);
