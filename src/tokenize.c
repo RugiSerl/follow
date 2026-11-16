@@ -138,3 +138,12 @@ void tokenize_text(char *text, strhash *stockage, token_list* res) {
         token_list_add(res, token_create(text, &i, stockage));
     }
 }
+
+int token_equals(token *t1, token *t2) {
+    if (t1->type != t2->type) return 0;
+    if (t1->type == WORD || t1->type == SPACE) {
+        return strcmp(t1->data.word, t2->data.word) == 0;
+    } else {
+        return strncmp(t1->data.space, t2->data.space, 4) == 0;
+    }
+}

@@ -19,5 +19,6 @@ int main() {
     list_test();
     strhash_test();
     tokenize_test();
+    plsc_test();
     return UNITY_END();
 }

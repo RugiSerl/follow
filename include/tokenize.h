@@ -77,3 +77,8 @@ token* token_create(char* text, size_t* offset, strhash* stockage);
  * Libère les données du token.
  */
 void token_free(token* token);
+
+/**
+ * Compare deux tokens.
+ */
+int token_equals(token* t1, token* t2);
