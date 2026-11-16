@@ -83,10 +83,33 @@ void openfile_test(){
     free(test2);
 }
 
+
+void token_list_add_test(){
+    strhash* s = strhash_create(10);
+    token_list* t_list = token_list_create(20);
+    char text[] = "Ceci est     une  phrase   ";
+    size_t offset = 0;
+
+    token* t1 = token_create(text, &offset, s);
+    token* t2 = token_create(text, &offset, s);
+
+    
+    TEST_ASSERT_EQUAL_INT(0,t_list->length);
+    TEST_ASSERT_EQUAL_INT(1,token_list_add(t_list,t1));
+    TEST_ASSERT_EQUAL_INT(1,t_list->length);
+    TEST_ASSERT_EQUAL_INT(1,token_list_add(t_list,t2));
+    TEST_ASSERT_EQUAL_INT(2,t_list->length);
+
+    strhash_free(s);
+    token_list_free(t_list);
+}
+
+
 void tokenize_test() {
     RUN_TEST(token_create_test);
     RUN_TEST(token_list_create_free_test);
     RUN_TEST(tokenize_text_test);
     RUN_TEST(load_text_analysis_test);
     RUN_TEST(openfile_test);
+    RUN_TEST(token_list_add_test);
 }
