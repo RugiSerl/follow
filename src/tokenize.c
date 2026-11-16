@@ -74,6 +74,7 @@ void token_list_free(token_list* list) {
 }
 
 int token_list_add(token_list *list, token* t) {
+    if (t==NULL)return 0;
     if (list->length+1 > list->capacity) {
         list->capacity *= 2;
         list->tokens = realloc(list->tokens, sizeof(token*) * list->capacity);
