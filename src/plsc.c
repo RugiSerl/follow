@@ -71,3 +71,27 @@ int_matrix* plsc_lengths(token_list* ref_tokens, token_list* src_tokens) {
 
     return res;
 }
+
+
+token_list* plsc(token_list* ref_tokens, token_list* src_tokens){
+    int_matrix* m=plsc_lengths(ref_tokens, src_tokens);
+    token_list* res=token_list_create(m->data[m->m][m->n]);
+    int i=m->m;
+    int j=m->n;
+    int x=0;
+    while(i!=0||j!=0){
+        if(token_equals(ref_tokens->tokens[i],ref_tokens->tokens[j])){
+            i--;
+            j--;
+            res->tokens[res->length-1-(x++)]=ref_tokens->tokens[i];
+        }
+        else{
+            if(m->data[i-1][j]>=m->data[i][j-1]){
+                i--;
+            } else {
+                j--;
+            }
+        }
+    }
+    return res;
+}

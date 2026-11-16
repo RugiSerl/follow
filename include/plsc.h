@@ -28,3 +28,10 @@ void int_matrix_display(int_matrix* matrix);
  * Créé la matrice où (c)_ij = "longueur des PLSCs entre ref_tokens[i] et ref_tokens[j]."
  */
 int_matrix* plsc_lengths(token_list* ref_tokens, token_list* src_tokens);
+
+
+
+/**
+ * Renvoie le plsc 
+ */
+token_list* plsc(token_list* ref_tokens, token_list* src_tokens);
