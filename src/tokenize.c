@@ -81,9 +81,22 @@ int token_list_add(token_list *list, token* t) {
         if (list->tokens == NULL) {
             return 0;
         }
+        // IMPORTANT : permet de ne pas avoir de problème quand on free la liste.
+        for (int i = list->length+1; i<list->capacity; i++) {
+            list->tokens[i] = NULL;
+        }
     }
     list->tokens[list->length++] = t;
     return 1;
+}
+
+void token_list_to_string(token_list *list, char* dest) {
+    dest[0] = '\0';
+    for (int i = 0; i<list->length; i++) {
+        char buf[100];
+        token_to_string(list->tokens[i], buf);
+        strcat(dest, buf);
+    }
 }
 
 int is_delimiter(char c) {
@@ -117,6 +130,9 @@ token* token_create(char *text, size_t *offset, strhash *stockage) {
     size_t data_size = *offset - t->textOffset;
     if (t->type == SHORT_SPACE) {
         strncpy(t->data.space, &text[t->textOffset], data_size);
+        if (data_size < 4) {
+            t->data.space[data_size] = '\0';
+        }
     } else {
         char* str = (char*)malloc(sizeof(char)*(data_size+1));
         strncpy(str, &text[t->textOffset], data_size);
@@ -145,5 +161,37 @@ int token_equals(token *t1, token *t2) {
         return strcmp(t1->data.word, t2->data.word) == 0;
     } else {
         return strncmp(t1->data.space, t2->data.space, 4) == 0;
+    }
+}
+
+void token_to_string(token *t, char* dest) {
+    switch (t->type) {
+        case WORD: case SPACE:
+            sprintf(dest, "%s", t->data.word);
+            break;
+        case SHORT_SPACE:
+            {
+                char* str = (char*)malloc(sizeof(char)*5);
+                str[4] = '\0';
+                strncpy(str, t->data.space, 4);
+                sprintf(dest, "%s", str);
+                free(str);
+            }
+            break;
+        case ERASE:
+            sprintf(dest, "[ERASE]");
+            break;
+        case INSERT:
+            sprintf(dest, "[INSERT]");
+            break;
+        case REPLACE:
+            sprintf(dest, "[REPLACE]");
+            break;
+        case EMPTY:
+            sprintf(dest, "[EMPTY]");
+            break;
+        default:
+            sprintf(dest, "[UNKNOWN_TOKEN]");
+            break;
     }
 }

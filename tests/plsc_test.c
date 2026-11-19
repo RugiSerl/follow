@@ -11,7 +11,7 @@ void plsc_lengths_test() {
     text_analysis* t = text_analysis_create("assets/test_ref2.txt", "assets/test_src2.txt");
     int_matrix* mat = plsc_lengths(t->ref_tokens, t->src_tokens);
 
-    int_matrix_display(mat);
+    // int_matrix_display(mat);
     int_matrix_free(mat);
     text_analysis_free(t);
 }

@@ -137,6 +137,26 @@ void token_list_add_test(){
     token_list_free(t_list);
 }
 
+void token_list_to_string_test() {
+    char buf[500] = { 0 };
+    strhash* s = strhash_create(10);
+
+    char text[] = "Ceci est     une  phrase   ";
+    token_list* t = token_list_create(10);
+    tokenize_text(text, s, t);
+    token_list_to_string(t, buf);
+    TEST_ASSERT_EQUAL_STRING(text, buf);
+    token_list_free(t);
+
+    char text2[] = "Bonjour    au revoir;; zzz kkkl    \t\tdz zjd\n\n\ndz     dd";
+    token_list* t2 = token_list_create(10);
+    tokenize_text(text2, s, t2);
+    token_list_to_string(t2, buf);
+    TEST_ASSERT_EQUAL_STRING(text2, buf);
+    token_list_free(t2);
+
+    strhash_free(s);
+}
 
 void tokenize_test() {
     RUN_TEST(token_create_test);
@@ -146,4 +166,5 @@ void tokenize_test() {
     RUN_TEST(text_analysis_test);
     RUN_TEST(openfile_test);
     RUN_TEST(token_list_add_test);
+    RUN_TEST(token_list_to_string_test);
 }
