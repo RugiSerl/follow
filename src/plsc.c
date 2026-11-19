@@ -12,8 +12,16 @@ int_matrix* int_matrix_create(size_t m, size_t n) {
     matrix->m = m;
     matrix->n = n;
     matrix->data = (int**) malloc(sizeof(int*) * m);
+    if(matrix->data==NULL){
+        free(matrix);
+        return NULL;
+    }
     for (size_t i = 0; i<m; i++) {
         matrix->data[i] = (int*) malloc(sizeof(int) * n);
+        if(matrix->data[i]==NULL){
+            int_matrix_free(matrix);
+            return NULL;
+        }
         for (size_t j = 0; j<n; j++) {
             matrix->data[i][j] = 0;
         }
