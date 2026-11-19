@@ -75,15 +75,16 @@ int_matrix* plsc_lengths(token_list* ref_tokens, token_list* src_tokens) {
 
 token_list* plsc(token_list* ref_tokens, token_list* src_tokens){
     int_matrix* m = plsc_lengths(ref_tokens, src_tokens);
-    token_list* res = token_list_create(m->data[m->m][m->n]);
-    int i = m->m;
-    int j = m->n;
-    int x = 0;
-    while (i != 0 || j != 0) {
-        if (token_equals(ref_tokens->tokens[i], ref_tokens->tokens[j])) {
+    token_list* res = token_list_create(m->data[m->m-1][m->n-1]);
+    int i = m->m-1;
+    int j = m->n-1;
+    while (i != 0 && j != 0) {
+        if (token_equals(ref_tokens->tokens[i], src_tokens->tokens[j])) {
+            // Attention on ajoute à la fin alors qu'on devrait faire au début.
+            // La liste va donc être à l'envers.
+            token_list_add(res, token_duplicate(ref_tokens->tokens[i]));
             i--;
             j--;
-            res->tokens[res->length - 1 - (x++)] = ref_tokens->tokens[i];
         } else {
             if (m->data[i-1][j] >= m->data[i][j-1]) {
                 i--;
@@ -92,5 +93,14 @@ token_list* plsc(token_list* ref_tokens, token_list* src_tokens){
             }
         }
     }
+    int_matrix_free(m);
+
+    // On renverse la liste des tokens :
+    for (int i = 0; i<res->length/2; i++) {
+        token* temp = res->tokens[i];
+        res->tokens[i] = res->tokens[res->length-1-i];
+        res->tokens[res->length-1-i] = temp;
+    }
+
     return res;
 }

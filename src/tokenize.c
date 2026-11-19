@@ -99,6 +99,12 @@ void token_list_to_string(token_list *list, char* dest) {
     }
 }
 
+void token_list_display(token_list *list) {
+    char buf[1000];
+    token_list_to_string(list, buf);
+    printf("%s\n", buf);
+}
+
 int is_delimiter(char c) {
     return c == ' ' || c == '\t' || c == '\n';
 }
@@ -162,6 +168,12 @@ int token_equals(token *t1, token *t2) {
     } else {
         return strncmp(t1->data.space, t2->data.space, 4) == 0;
     }
+}
+
+token* token_duplicate(token *t) {
+    token* new = malloc(sizeof(token));
+    *new = *t;
+    return new;
 }
 
 void token_to_string(token *t, char* dest) {

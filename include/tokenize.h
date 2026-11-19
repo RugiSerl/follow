@@ -67,9 +67,14 @@ void token_list_free(token_list* list);
 int token_list_add(token_list* list, token* token);
 
 /**
- * Affiche dans stdout une liste de tokens.
+ * stocke dans dest la représentation d'une liste de tokens.
  */
 void token_list_to_string(token_list* list, char* dest);
+
+/**
+ * Affiche dans stdout une liste de tokens.
+ */
+void token_list_display(token_list* list);
 
 /**
  * Crée un token à partir du texte qui lui est donné en entrée et de l'emplacement (offset)
@@ -87,6 +92,11 @@ void token_free(token* token);
  * Compare deux tokens.
  */
 int token_equals(token* t1, token* t2);
+
+/**
+ * Alloue et copie un token.
+ */
+token* token_duplicate(token* t);
 
 /**
  * Affiche une token dans dest.
