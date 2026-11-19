@@ -39,10 +39,9 @@ void int_matrix_display(int_matrix *matrix) {
 }
 
 void plsc_aux(int_matrix* matrix, token_list* ref_tokens, token_list* src_tokens, int i, int j) {
-    if (i == 0 || j == 0) {
-        matrix->data[i][j] = 0;
-    } else if (matrix->data[i][j] == -1) {
-        if (token_equals(ref_tokens->tokens[i], src_tokens->tokens[j])) {
+    if (i == 0 || j == 0) return;
+    if (matrix->data[i][j] == -1) {
+        if (token_equals(ref_tokens->tokens[i-1], src_tokens->tokens[j-1])) {
             plsc_aux(matrix, ref_tokens, src_tokens, i-1, j-1);
             matrix->data[i][j] = matrix->data[i-1][j-1] + 1;
         } else {
@@ -54,15 +53,19 @@ void plsc_aux(int_matrix* matrix, token_list* ref_tokens, token_list* src_tokens
 }
 
 int_matrix* plsc_lengths(token_list* ref_tokens, token_list* src_tokens) {
-    int_matrix* res = int_matrix_create(ref_tokens->length, src_tokens->length);
+    int_matrix* res = int_matrix_create(ref_tokens->length+1, src_tokens->length+1);
     for (int i = 0; i<res->m; i++) {
         for (int j = 0; j<res->n; j++) {
-            res->data[i][j] = -1;
+            if (i == 0 || j == 0) {
+                res->data[i][j] = 0;
+            } else {
+                res->data[i][j] = -1;
+            }
         }
     }
 
-    for (int i = 0; i<res->m; i++) {
-        for (int j = 0; j<res->n; j++) {
+    for (int i = 1; i<res->m; i++) {
+        for (int j = 1; j<res->n; j++) {
             if (res->data[i][j] == -1) {
                 plsc_aux(res, ref_tokens, src_tokens, i, j);
             }
@@ -79,10 +82,10 @@ token_list* plsc(token_list* ref_tokens, token_list* src_tokens){
     int i = m->m-1;
     int j = m->n-1;
     while (i != 0 && j != 0) {
-        if (token_equals(ref_tokens->tokens[i], src_tokens->tokens[j])) {
+        if (token_equals(ref_tokens->tokens[i-1], src_tokens->tokens[j-1])) {
             // Attention on ajoute à la fin alors qu'on devrait faire au début.
             // La liste va donc être à l'envers.
-            token_list_add(res, token_duplicate(ref_tokens->tokens[i]));
+            token_list_add(res, token_duplicate(ref_tokens->tokens[i-1]));
             i--;
             j--;
         } else {
