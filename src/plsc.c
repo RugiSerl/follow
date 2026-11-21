@@ -145,6 +145,20 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
             }
         }
     }
+    while (i > 0) {
+        i--;
+        token* t = token_empty();
+        t->data.token_referenced = ref_tokens->tokens[i];
+        t->type = ERASE;
+        token_list_add(res, t);
+    }
+    while (j > 0) {
+        j--;
+        token* t = token_empty();
+        t->data.token_referenced = src_tokens->tokens[j];
+        t->type = INSERT;
+        token_list_add(res, t);
+    }
     int_matrix_free(m);
 
     // On renverse la liste des tokens :
