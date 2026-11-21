@@ -6,16 +6,19 @@ typedef enum {
     WORD, SHORT_SPACE, SPACE, ERASE, INSERT, REPLACE, EMPTY
 } token_type;
 
+typedef struct token token;
+
 typedef union {
     char* word;
     char space[4];
+    token* token_referenced;
 } token_data;
 
-typedef struct {
+struct token {
     token_type type;
     int textOffset;
     token_data data;
-} token;
+};
 
 typedef struct {
     token** tokens;
@@ -82,6 +85,11 @@ void token_list_display(token_list* list);
  * Le offset est modifié par la suite.
  */
 token* token_create(char* text, size_t* offset, strhash* stockage);
+
+/**
+ * Crée un nouveau token sans rien.
+ */
+token* token_empty();
 
 /**
  * Libère les données du token.

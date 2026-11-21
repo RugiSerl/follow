@@ -29,9 +29,12 @@ void int_matrix_display(int_matrix* matrix);
  */
 int_matrix* plsc_lengths(token_list* ref_tokens, token_list* src_tokens);
 
-
-
 /**
- * Renvoie le plsc 
+ * Renvoie le plsc entre deux listes de tokens.
  */
 token_list* plsc(token_list* ref_tokens, token_list* src_tokens);
+
+/**
+ * Renvoie la différence entre deux textes, inspiré de
+ */
+token_list* diff(token_list* ref_tokens, token_list* src_tokens);

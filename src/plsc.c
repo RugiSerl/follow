@@ -115,3 +115,44 @@ token_list* plsc(token_list* ref_tokens, token_list* src_tokens){
 
     return res;
 }
+
+// On va faire comme pour plsc mais cette fois ci en faisant gaffe au nouveau token avec ERASE, REPLACE, ...
+token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
+    int_matrix* m = plsc_lengths(ref_tokens, src_tokens);
+    token_list* res = token_list_create(m->data[m->m-1][m->n-1]);
+    int i = m->m-1;
+    int j = m->n-1;
+    while (i != 0 && j != 0) {
+        if (token_equals(ref_tokens->tokens[i-1], src_tokens->tokens[j-1])) {
+            // Attention on ajoute à la fin alors qu'on devrait faire au début.
+            // La liste va donc être à l'envers.
+            token_list_add(res, token_duplicate(ref_tokens->tokens[i-1]));
+            i--;
+            j--;
+        } else {
+            if (m->data[i-1][j] >= m->data[i][j-1]) {
+                i--;
+                token* t = token_empty();
+                t->data.token_referenced = ref_tokens->tokens[i];
+                t->type = ERASE;
+                token_list_add(res, t);
+            } else {
+                j--;
+                token* t = token_empty();
+                t->type = INSERT;
+                t->data.token_referenced = src_tokens->tokens[j];
+                token_list_add(res, t);
+            }
+        }
+    }
+    int_matrix_free(m);
+
+    // On renverse la liste des tokens :
+    for (int i = 0; i<res->length/2; i++) {
+        token* temp = res->tokens[i];
+        res->tokens[i] = res->tokens[res->length-1-i];
+        res->tokens[res->length-1-i] = temp;
+    }
+
+    return res;
+}

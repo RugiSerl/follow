@@ -150,6 +150,13 @@ token* token_create(char *text, size_t *offset, strhash *stockage) {
     return t;
 }
 
+token* token_empty() {
+    token* t = (token*) malloc(sizeof(token));
+    t->textOffset = 0;
+    t->type = EMPTY;
+    return t;
+}
+
 void token_free(token *token) {
     free(token);
 }
@@ -177,6 +184,7 @@ token* token_duplicate(token *t) {
 }
 
 void token_to_string(token *t, char* dest) {
+    char buf[20];
     switch (t->type) {
         case WORD: case SPACE:
             sprintf(dest, "%s", t->data.word);
@@ -191,10 +199,12 @@ void token_to_string(token *t, char* dest) {
             }
             break;
         case ERASE:
-            sprintf(dest, "[ERASE]");
+            token_to_string(t->data.token_referenced, buf);
+            sprintf(dest, "[ERASE:%s]", buf);
             break;
         case INSERT:
-            sprintf(dest, "[INSERT]");
+            token_to_string(t->data.token_referenced, buf);
+            sprintf(dest, "[INSERT:%s]", buf);
             break;
         case REPLACE:
             sprintf(dest, "[REPLACE]");
