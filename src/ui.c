@@ -6,6 +6,69 @@
 #include <stdlib.h>
 #include <string.h>
 
+void create_diff_tags(GtkTextBuffer *buffer) {
+    // Texte supprimé
+    gtk_text_buffer_create_tag(buffer, "diff-erase",
+        "background",    "#f8d7da",
+        "foreground",    "#842029",
+        "strikethrough", TRUE,
+        NULL);
+    // Texte ajouté
+    gtk_text_buffer_create_tag(buffer, "diff-insert",
+        "background", "#d1e7dd",
+        "foreground", "#0f5132",
+        "underline",  FALSE,
+        NULL);
+}
+
+char *token_text(token *t) {
+    switch (t->type) {
+        case WORD:
+        case SPACE:
+            return g_strdup(t->data.word);
+
+        case SHORT_SPACE: {
+            char tmp[5] = { 0 };
+            memcpy(tmp, t->data.space, 4);
+            return g_strdup(tmp);
+        }
+
+        case ERASE:
+        case INSERT:
+            return token_text(t->data.token_referenced);
+
+        default:
+            return g_strdup("");
+    }
+}
+
+void display_diff(GtkTextBuffer *buffer, token_list *diff) {
+    gtk_text_buffer_set_text(buffer, "", 0);
+
+    GtkTextIter end;
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+    // Regroupe toutes les insertions en une seule action (undo + perf).
+    gtk_text_buffer_begin_user_action(buffer);
+
+    for (size_t i = 0; i < diff->length; i++) {
+        token *t = diff->tokens[i];
+        char *text = token_text(t);
+
+        if (t->type == ERASE) {
+            gtk_text_buffer_insert_with_tags_by_name(buffer, &end, text, -1, "diff-erase", NULL);
+        } else if (t->type == INSERT) {
+            gtk_text_buffer_insert_with_tags_by_name(buffer, &end, text, -1, "diff-insert", NULL);
+        } else {
+            gtk_text_buffer_insert(buffer, &end, text, -1);
+        }
+
+        g_free(text);
+    }
+
+    gtk_text_buffer_end_user_action(buffer);
+}
+
 text_boxes* text_boxes_new(GtkBuilder* builder) {
     text_boxes *widgets = g_new(text_boxes, 1);
 
@@ -15,6 +78,11 @@ text_boxes* text_boxes_new(GtkBuilder* builder) {
 
     gtk_text_view_set_editable(GTK_TEXT_VIEW(widgets->textview3), FALSE);
     gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(widgets->textview3), FALSE);
+    gtk_text_view_set_monospace(GTK_TEXT_VIEW(widgets->textview3), TRUE);
+
+    create_diff_tags(gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview1)));
+    create_diff_tags(gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview2)));
+    create_diff_tags(gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview3)));
 
     return widgets;
 }
@@ -27,10 +95,7 @@ int ui_run(int argc, char *argv[]) {
     GtkBuilder *builder;
     GtkWidget *window;
 
-    /* 1. Initialisation de GTK */
     gtk_init(&argc, &argv);
-
-    /* 2. Création du GtkBuilder et chargement du fichier Glade / UI */
     builder = gtk_builder_new();
     if (!gtk_builder_add_from_file(builder, "ui.glade", NULL)) {
         g_critical("Impossible de charger le fichier ui.glade");
@@ -38,33 +103,21 @@ int ui_run(int argc, char *argv[]) {
     }
 
     GtkWidget *button = GTK_WIDGET(gtk_builder_get_object(builder, "execute"));
-
-    /* 3. Récupération de la fenêtre principale par son ID */
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
-
     text_boxes* textboxes = text_boxes_new(builder);
 
     g_signal_connect(button, "clicked", G_CALLBACK(ui_execute_diff), textboxes);
-
-    /* Connecter la fermeture de la fenêtre à l'arrêt de la boucle principale */
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), textboxes->textview1);
 
-    /* 4. Affichage de la fenêtre et de tous ses widgets enfants */
     gtk_widget_show_all(window);
-
-    /* 5. Libération du builder (il n'est plus nécessaire après la création) */
     g_object_unref(builder);
-
-    /* 6. Lancement de la boucle principale GTK */
     gtk_main();
-
     return 0;
 }
 
 
 // Fonction appelée lorsque le bouton est cliqué
 void ui_execute_diff(GtkButton *button, gpointer user_data) {
-    g_print("Le bouton a été cliqué !\n");
     text_boxes *widgets = (text_boxes *)user_data;
     char* ref = get_textview_buffer(widgets->textview1);
     char* src = get_textview_buffer(widgets->textview2);
@@ -77,19 +130,15 @@ void ui_execute_diff(GtkButton *button, gpointer user_data) {
     tokenize_text(src, s, src_tokens);
 
     token_list* list_diff = diff(ref_tokens, src_tokens);
-    char* buf = malloc(sizeof(char) * (strlen(ref)+strlen(src)) * 10);
-    token_list_to_string(list_diff, buf);
 
     GtkTextBuffer *buffer3 = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview3));
-    gchar *message = g_strdup_printf("%s", buf);
-    gtk_text_buffer_set_text(buffer3, message, -1);
+    display_diff(buffer3, list_diff);
 
-    free(buf);
     token_list_free(list_diff);
     token_list_free(ref_tokens);
     token_list_free(src_tokens);
-    free(ref);
-    free(src);
+    g_free(ref);
+    g_free(src);
 
 }
 
