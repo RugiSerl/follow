@@ -11,8 +11,9 @@ OBJ=$(patsubst $(SRC_DIR)/%, $(BUILD_DIR)/%, $(filter-out $(SRC_DIR)/main.o, $(S
 OBJ_MAIN=$(OBJ) $(BUILD_DIR)/main.o
 SRC_TEST=$(call wildcard, $(TEST_DIR)/*.c)
 OBJ_TEST=$(patsubst $(TEST_DIR)/%, $(BUILD_DIR)/%, $(SRC_TEST:.c=.o))
-CFLAGS = -DUNITY_INCLUDE_DOUBLE -DUNITY_DOUBLE_PRECISION=1e-12f -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g -O1  -Iexternal/unity/src -I$(INCLUDE_DIR)
-LFLAGS = -lm -lasan -fsanitize=address,undefined -fno-omit-frame-pointer
+CFLAGS = -DUNITY_INCLUDE_DOUBLE -DUNITY_DOUBLE_PRECISION=1e-12f -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g -O1  -Iexternal/unity/src -I$(INCLUDE_DIR) $(shell pkg-config --cflags gtk+-3.0)
+LFLAGS = -lm -fno-omit-frame-pointer $(shell pkg-config --libs gtk+-3.0)
+LFLAGS_TEST = $(LFLAGS) -lasan -fsanitize=address,undefined
 
 run: $(TARGET)
 	$(TARGET)
@@ -36,7 +37,7 @@ mk_build_dir:
 	mkdir -p $(BUILD_DIR)
 
 $(TARGET_TEST): $(OBJ) $(OBJ_TEST) $(BUILD_DIR)/unity.o
-	gcc $(OBJ_TEST) $(OBJ) $(BUILD_DIR)/unity.o -o $(TARGET_TEST) $(LFLAGS)
+	gcc $(OBJ_TEST) $(OBJ) $(BUILD_DIR)/unity.o -o $(TARGET_TEST) $(LFLAGS_TEST)
 
 test: $(TARGET_TEST)
 	./$(TARGET_TEST)
