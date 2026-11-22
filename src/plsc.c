@@ -89,7 +89,7 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
     token_list* res = token_list_create(m->data[m->m-1][m->n-1]);
     int i = m->m-1;
     int j = m->n-1;
-    while (i != 0 && j != 0) {
+    while (i > 0 && j > 0) {
         if (token_equals(ref_tokens->tokens[i-1], src_tokens->tokens[j-1])) {
             // Attention on ajoute à la fin alors qu'on devrait faire au début.
             // La liste va donc être à l'envers.
@@ -112,6 +112,12 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
             }
         }
     }
+
+    // On n'a plus besoin de la matrice maintenant.
+    int_matrix_free(m);
+
+    // Étant donné qu'on n'a pas forcément regardé en entier les deux listes de tokens,
+    // on parcourt bien le reste des deux.
     while (i > 0) {
         i--;
         token* t = token_empty();
@@ -126,7 +132,6 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
         t->type = INSERT;
         token_list_add(res, t);
     }
-    int_matrix_free(m);
 
     // On renverse la liste des tokens :
     for (int i = 0; i<res->length/2; i++) {
