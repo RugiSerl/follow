@@ -1,5 +1,7 @@
 #include "plsc.h"
+#include "strhash.h"
 #include "tokenize.h"
+#include "unity.h"
 #include "unity_internals.h"
 
 #define REF2 "assets/test_ref2.txt"
@@ -23,10 +25,31 @@ void diff_test() {
     text_analysis* t = text_analysis_create(REF2, SRC2);
     token_list* list = diff(t->ref_tokens, t->src_tokens);
 
-    token_list_display(list);
+    char buf[1000];
+    token_list_to_string(list, buf);
+    TEST_ASSERT_EQUAL_STRING("[INSERT:ceci][INSERT: ][INSERT:n'est][INSERT: ][INSERT:pas][INSERT: ]un[ERASE: ][ERASE:super] texte génial, [INSERT:salut.][ERASE:au][ERASE: ][ERASE:revoir.]\n", buf);
 
     token_list_free(list);
     text_analysis_free(t);
+
+    char ref[] = "Coucou ça va ?";
+    char src[] = "Salut ça va.";
+    token_list* ref_tokens = token_list_create(4);
+    token_list* src_tokens = token_list_create(4);
+    strhash* s = strhash_create(10);
+
+    tokenize_text(ref, s, ref_tokens);
+    tokenize_text(src, s, src_tokens);
+
+    token_list* list_diff = diff(ref_tokens, src_tokens);
+
+    token_list_to_string(list_diff, buf);
+    TEST_ASSERT_EQUAL_STRING("[INSERT:Salut][ERASE:Coucou] ça [INSERT:va.][ERASE:va][ERASE: ][ERASE:?]", buf);
+
+    token_list_free(list_diff);
+    token_list_free(ref_tokens);
+    token_list_free(src_tokens);
+    strhash_free(s);
 }
 
 void plsc_test() {
