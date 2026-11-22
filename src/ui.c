@@ -3,6 +3,8 @@
 #include "plsc.h"
 #include "tokenize.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 text_boxes* text_boxes_new(GtkBuilder* builder) {
     text_boxes *widgets = g_new(text_boxes, 1);
@@ -67,21 +69,22 @@ void ui_execute_diff(GtkButton *button, gpointer user_data) {
     char* ref = get_textview_buffer(widgets->textview1);
     char* src = get_textview_buffer(widgets->textview2);
 
-    token_list* ref_tokens = token_list_create(4);
-    token_list* src_tokens = token_list_create(4);
+    token_list* ref_tokens = token_list_create(10);
+    token_list* src_tokens = token_list_create(10);
     strhash* s = strhash_create(10);
 
     tokenize_text(ref, s, ref_tokens);
     tokenize_text(src, s, src_tokens);
 
     token_list* list_diff = diff(ref_tokens, src_tokens);
-    char buf[2048];
+    char* buf = malloc(sizeof(char) * (strlen(ref)+strlen(src)) * 10);
     token_list_to_string(list_diff, buf);
 
     GtkTextBuffer *buffer3 = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview3));
     gchar *message = g_strdup_printf("%s", buf);
     gtk_text_buffer_set_text(buffer3, message, -1);
 
+    free(buf);
     token_list_free(list_diff);
     token_list_free(ref_tokens);
     token_list_free(src_tokens);
