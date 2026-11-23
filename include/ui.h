@@ -7,7 +7,8 @@ typedef struct {
     GtkWidget *textview1;
     GtkWidget *textview2;
     GtkWidget *textview3;
-} text_boxes;
+    GtkWindow* window;
+} ui_state;
 
 // Création des tags pour surligner le texte dans le buffer.
 void create_diff_tags(GtkTextBuffer *buffer);
@@ -19,10 +20,10 @@ char *token_text(token *t);
 void display_diff(GtkTextBuffer *buffer, token_list *diff);
 
 // Crée et initialise les trois textview affichées.
-text_boxes* text_boxes_new(GtkBuilder* builder);
+ui_state* ui_state_new(GtkBuilder* builder, GtkWindow* window);
 
 // Libère les trois textviews.
-void text_boxes_free(text_boxes* t);
+void ui_state_free(ui_state* t);
 
 // Fonction principale de notre interface (équivalent à un main())
 int ui_run(int argc, char *argv[]);
@@ -32,3 +33,13 @@ char* get_textview_buffer(GtkWidget* text_view);
 
 // Fonction de callback quand le bouton execute est cliqué.
 void ui_execute_diff(GtkButton *button, gpointer user_data);
+
+// Ouvre un contexte pour sélectionner un fichier et renvoie le chemin du fichier sélectionné.
+// Si le choix a été abandonné, retourne NULL.
+char* open_file_dialog(GtkWindow* window);
+
+// Fonction de callback quand le bouton loadref est cliqué.
+void load_ref(GtkButton *button, gpointer user_data);
+
+// Fonction de callback quand le bouton loadsrc est cliqué.
+void load_src(GtkButton *button, gpointer user_data);

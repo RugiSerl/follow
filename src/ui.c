@@ -1,5 +1,6 @@
 #include "ui.h"
 #include "glib.h"
+#include "gtk/gtk.h"
 #include "plsc.h"
 #include "tokenize.h"
 #include <stdio.h>
@@ -69,12 +70,13 @@ void display_diff(GtkTextBuffer *buffer, token_list *diff) {
     gtk_text_buffer_end_user_action(buffer);
 }
 
-text_boxes* text_boxes_new(GtkBuilder* builder) {
-    text_boxes *widgets = g_new(text_boxes, 1);
+ui_state* ui_state_new(GtkBuilder* builder, GtkWindow* window) {
+    ui_state *widgets = g_new(ui_state, 1);
 
     widgets->textview1 = GTK_WIDGET(gtk_builder_get_object(builder, "textview1"));
     widgets->textview2 = GTK_WIDGET(gtk_builder_get_object(builder, "textview2"));
     widgets->textview3 = GTK_WIDGET(gtk_builder_get_object(builder, "textview3"));
+    widgets->window = window;
 
     gtk_text_view_set_editable(GTK_TEXT_VIEW(widgets->textview3), FALSE);
     gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(widgets->textview3), FALSE);
@@ -87,7 +89,7 @@ text_boxes* text_boxes_new(GtkBuilder* builder) {
     return widgets;
 }
 
-void text_boxes_free(text_boxes *t) {
+void ui_state_free(ui_state *t) {
     g_free(t);
 }
 
@@ -103,13 +105,17 @@ int ui_run(int argc, char *argv[]) {
     }
 
     GtkWidget *execute_button = GTK_WIDGET(gtk_builder_get_object(builder, "execute"));
+    GtkWidget *loadref_button = GTK_WIDGET(gtk_builder_get_object(builder, "loadref"));
+    GtkWidget *loadsrc_button = GTK_WIDGET(gtk_builder_get_object(builder, "loadsrc"));
     GtkWidget *quit_button = GTK_WIDGET(gtk_builder_get_object(builder, "quit"));
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
-    text_boxes* textboxes = text_boxes_new(builder);
+    ui_state* state = ui_state_new(builder, GTK_WINDOW(window));
 
-    g_signal_connect(execute_button, "clicked", G_CALLBACK(ui_execute_diff), textboxes);
+    g_signal_connect(execute_button, "clicked", G_CALLBACK(ui_execute_diff), state);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(quit_button, "activate", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(loadref_button, "activate", G_CALLBACK(load_ref), state);
+    g_signal_connect(loadsrc_button, "activate", G_CALLBACK(load_src), state);
 
     gtk_widget_show_all(window);
     g_object_unref(builder);
@@ -120,7 +126,7 @@ int ui_run(int argc, char *argv[]) {
 
 // Fonction appelée lorsque le bouton est cliqué
 void ui_execute_diff(GtkButton *button, gpointer user_data) {
-    text_boxes *widgets = (text_boxes *)user_data;
+    ui_state *widgets = (ui_state *)user_data;
     char* ref = get_textview_buffer(widgets->textview1);
     char* src = get_textview_buffer(widgets->textview2);
 
@@ -153,4 +159,33 @@ char* get_textview_buffer(GtkWidget* text_view) {
     gtk_text_buffer_get_end_iter(buffer, &end);
     char *text = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
     return text;
+}
+
+char* open_file_dialog(GtkWindow* window) {
+    GtkFileChooserNative *native;
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+    gint res;
+
+    native = gtk_file_chooser_native_new("Open File", window, action, "_Open", "_Cancel");
+    res = gtk_native_dialog_run(GTK_NATIVE_DIALOG(native));
+    if (res == GTK_RESPONSE_ACCEPT) {
+        char *filename;
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER(native);
+        filename = gtk_file_chooser_get_filename(chooser);
+        printf("filename : %s\n", filename);
+        return filename;
+    }
+
+    g_object_unref (native);
+    return NULL;
+}
+
+void load_ref(GtkButton *button, gpointer user_data) {
+    ui_state *widgets = (ui_state *)user_data;
+    open_file_dialog(widgets->window);
+}
+
+void load_src(GtkButton *button, gpointer user_data) {
+    ui_state *widgets = (ui_state *)user_data;
+    open_file_dialog(widgets->window);
 }
