@@ -217,12 +217,12 @@ void load_src(GtkButton *button, gpointer user_data) {
 }
 
 void open_apropos(GtkButton *button, gpointer parent) {
-    const gchar *authors[] = { "Votre Nom", NULL };
+    const gchar *authors[] = { "Raphaël Glet", "Kylian Bougeard", NULL };
     gtk_show_about_dialog(
         GTK_WINDOW(parent),
-        "program-name", "Mon Application",
-        "version", "1.0.0",
-        "comments", "Une petite application en C avec GTK 3.",
+        "program-name", "Follow",
+        "version", "0.5.0",
+        "comments", "Application qui permet de calculer les différences entre deux textes.",
         "authors", authors,
         "license-type", GTK_LICENSE_MIT_X11,
         NULL
