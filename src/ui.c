@@ -102,12 +102,14 @@ int ui_run(int argc, char *argv[]) {
         return 1;
     }
 
-    GtkWidget *button = GTK_WIDGET(gtk_builder_get_object(builder, "execute"));
+    GtkWidget *execute_button = GTK_WIDGET(gtk_builder_get_object(builder, "execute"));
+    GtkWidget *quit_button = GTK_WIDGET(gtk_builder_get_object(builder, "quit"));
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
     text_boxes* textboxes = text_boxes_new(builder);
 
-    g_signal_connect(button, "clicked", G_CALLBACK(ui_execute_diff), textboxes);
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), textboxes->textview1);
+    g_signal_connect(execute_button, "clicked", G_CALLBACK(ui_execute_diff), textboxes);
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(quit_button, "activate", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_widget_show_all(window);
     g_object_unref(builder);
