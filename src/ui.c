@@ -42,6 +42,7 @@ char *token_text(token *t) {
 
         case ERASE:
         case INSERT:
+        case REPLACE:
             return token_text(t->data.token_referenced);
 
         default:
