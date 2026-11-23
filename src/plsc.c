@@ -89,11 +89,14 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
     token_list* res = token_list_create(m->data[m->m-1][m->n-1]);
     size_t i = m->m-1;
     size_t j = m->n-1;
+    printf("(i,j)=(%d,%d)\n", i, j);
     while (i > 0 && j > 0) {
         if (token_equals(ref_tokens->tokens[i-1], src_tokens->tokens[j-1])) {
             // Attention on ajoute à la fin alors qu'on devrait faire au début.
             // La liste va donc être à l'envers.
-            token_list_add(res, token_duplicate(ref_tokens->tokens[i-1]));
+            if (!token_list_add(res, token_duplicate(ref_tokens->tokens[i-1]))) {
+                return NULL;
+            }
             i--;
             j--;
         } else {
@@ -111,7 +114,9 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
                 token* t = token_empty();
                 t->type = INSERT;
                 t->data.token_referenced = src_tokens->tokens[j];
-                token_list_add(res, t);
+                if (!token_list_add(res, t)) {
+                    return NULL;
+                }
             }
             else{
                 i--;
@@ -133,14 +138,18 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
         token* t = token_empty();
         t->data.token_referenced = ref_tokens->tokens[i];
         t->type = ERASE;
-        token_list_add(res, t);
+        if (!token_list_add(res, t)) {
+            return NULL;
+        }
     }
     while (j > 0) {
         j--;
         token* t = token_empty();
         t->data.token_referenced = src_tokens->tokens[j];
         t->type = INSERT;
-        token_list_add(res, t);
+        if (!token_list_add(res, t)) {
+            return NULL;
+        }
     }
 
     // On renverse la liste des tokens :

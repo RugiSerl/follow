@@ -59,7 +59,7 @@ void display_diff(GtkTextBuffer *buffer, token_list *diff) {
 
     // Regroupe toutes les insertions en une seule action (undo + perf).
     gtk_text_buffer_begin_user_action(buffer);
-
+    printf("length : %p\n", diff);
     for (size_t i = 0; i < diff->length; i++) {
         token *t = diff->tokens[i];
         char *text = token_text(t);
@@ -150,8 +150,18 @@ void ui_execute_diff(GtkButton *button, gpointer user_data) {
     tokenize_text(src, s, src_tokens);
 
     token_list* list_diff = diff(ref_tokens, src_tokens);
-
     GtkTextBuffer *buffer3 = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview3));
+
+    if (list_diff == NULL) {
+        gtk_text_buffer_set_text(buffer3, "Erreur :(", -1);
+        token_list_free(list_diff);
+        token_list_free(ref_tokens);
+        token_list_free(src_tokens);
+        g_free(ref);
+        g_free(src);
+        return;
+    }
+
     display_diff(buffer3, list_diff);
 
     (void) button; //pour enlever le warning unused
