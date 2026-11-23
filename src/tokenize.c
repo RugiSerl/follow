@@ -157,8 +157,8 @@ token* token_empty() {
     return t;
 }
 
-void token_free(token *token) {
-    free(token);
+void token_free(token *t) {
+    free(t);
 }
 
 void tokenize_text(char *text, strhash *stockage, token_list* res) {
