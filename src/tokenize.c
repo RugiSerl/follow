@@ -40,11 +40,11 @@ char* openfile(char* src){
     if (f == NULL) return NULL;
     struct stat st;
     stat(src,&st);
-    char* dest = malloc((sizeof(char) * st.st_size) + 1);
-    char c = fgetc(f);
+    char* dest = malloc((sizeof(char) * (size_t) st.st_size) + 1);
+    int c = fgetc(f);
     unsigned int i = 0;
     while (c != EOF) { // Boucle pour remplir la chaine de caractère.
-        dest[i++] = c;
+        dest[i++] = (char) c;
         c = fgetc(f);
     }
     fclose(f);
@@ -57,7 +57,7 @@ token_list* token_list_create(int capacity) {
     token_list* res = (token_list*)malloc(sizeof(token_list));
     res->length = 0;
     res->capacity = (size_t) capacity;
-    res->tokens = (token**)malloc(sizeof(token*) * capacity);
+    res->tokens = (token**)malloc(sizeof(token*) * (size_t) capacity);
     for (int i = 0; i<capacity; i++) {
         res->tokens[i] = NULL;
     }
@@ -66,7 +66,7 @@ token_list* token_list_create(int capacity) {
 
 void token_list_free(token_list* list) {
     if (list == NULL) return;
-    for (int i = 0; i<list->capacity; i++) {
+    for (size_t i = 0; i<list->capacity; i++) {
         token_free(list->tokens[i]);
     }
     free(list->tokens);
@@ -82,7 +82,7 @@ int token_list_add(token_list *list, token* t) {
             return 0;
         }
         // IMPORTANT : permet de ne pas avoir de problème quand on free la liste.
-        for (int i = list->length+1; i<list->capacity; i++) {
+        for (size_t i = list->length+1; i<list->capacity; i++) {
             list->tokens[i] = NULL;
         }
     }
@@ -92,7 +92,7 @@ int token_list_add(token_list *list, token* t) {
 
 void token_list_to_string(token_list *list, char* dest) {
     dest[0] = '\0';
-    for (int i = 0; i<list->length; i++) {
+    for (size_t i = 0; i<list->length; i++) {
         char buf[100];
         token_to_string(list->tokens[i], buf);
         strcat(dest, buf);

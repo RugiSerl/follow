@@ -17,8 +17,8 @@ typedef struct {
     double entry_stdev;     // Écart type du nombre d'éléments dans une entrée
 } strhash_stats;
 
-#define MIN(x,y) ((x)<(y))?(x):(y)
-#define MAX(x,y) ((x)>(y))?(x):(y)
+#define MIN(a, b)  (((a) < (b)) ? (a) : (b))
+#define MAX(a, b)  (((a) > (b)) ? (a) : (b))
 
 
 /**

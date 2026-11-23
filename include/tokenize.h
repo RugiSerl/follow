@@ -16,7 +16,7 @@ typedef union {
 
 struct token {
     token_type type;
-    int textOffset;
+    size_t textOffset;
     token_data data;
 };
 

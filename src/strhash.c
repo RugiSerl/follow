@@ -176,7 +176,7 @@ void strhash_display(strhash *hashtable) {
     printf("------------------\n");
     printf("Table de hachage (%d éléments)\n", (int)hashtable->size);
     for (size_t i = 0; i<hashtable->capacity; i++) {
-        printf("%000d : %s\n", i, list_to_string(hashtable->entries[i], node_string_to_string));
+        printf("%0lu : %s\n", i, list_to_string(hashtable->entries[i], node_string_to_string));
     }
     printf("------------------\n");
 }
