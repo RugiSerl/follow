@@ -172,7 +172,6 @@ char* open_file_dialog(GtkWindow* window) {
         char *filename;
         GtkFileChooser *chooser = GTK_FILE_CHOOSER(native);
         filename = gtk_file_chooser_get_filename(chooser);
-        printf("filename : %s\n", filename);
         return filename;
     }
 
@@ -182,10 +181,24 @@ char* open_file_dialog(GtkWindow* window) {
 
 void load_ref(GtkButton *button, gpointer user_data) {
     ui_state *widgets = (ui_state *)user_data;
-    open_file_dialog(widgets->window);
+    char* filename = open_file_dialog(widgets->window);
+    char* ref = openfile(filename);
+
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview1));
+    gtk_text_buffer_set_text(buffer, ref, strlen(ref));
+
+    g_free(filename);
+    free(ref);
 }
 
 void load_src(GtkButton *button, gpointer user_data) {
     ui_state *widgets = (ui_state *)user_data;
-    open_file_dialog(widgets->window);
+    char* filename = open_file_dialog(widgets->window);
+    char* src = openfile(filename);
+
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview2));
+    gtk_text_buffer_set_text(buffer, src, strlen(src));
+
+    g_free(filename);
+    free(src);
 }
