@@ -109,8 +109,8 @@ int ui_run(int argc, char *argv[]) {
 
     gtk_init(&argc, &argv);
     builder = gtk_builder_new();
-    if (!gtk_builder_add_from_file(builder, "ui.glade", NULL)) {
-        g_critical("Impossible de charger le fichier ui.glade");
+    if (!gtk_builder_add_from_resource(builder, "/org/follow/ui.glade", NULL)) {
+        g_critical("Impossible de charger la ressource ui.glade");
         return 1;
     }
 

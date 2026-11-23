@@ -8,7 +8,8 @@ TARGET=$(BUILD_DIR)/$(TARGET_NAME)
 TARGET_TEST=$(BUILD_DIR)/$(TARGET_TEST_NAME)
 SRC=$(call wildcard, $(SRC_DIR)/*.c)
 OBJ=$(patsubst $(SRC_DIR)/%, $(BUILD_DIR)/%, $(filter-out $(SRC_DIR)/main.o, $(SRC:.c=.o)))
-OBJ_MAIN=$(OBJ) $(BUILD_DIR)/main.o
+OBJ_MAIN=$(OBJ) $(BUILD_DIR)/main.o $(BUILD_DIR)/ui_resources.o
+UI_RESOURCE_SRC=$(BUILD_DIR)/ui_resources.c
 SRC_TEST=$(call wildcard, $(TEST_DIR)/*.c)
 OBJ_TEST=$(patsubst $(TEST_DIR)/%, $(BUILD_DIR)/%, $(SRC_TEST:.c=.o))
 CFLAGS = -DUNITY_INCLUDE_DOUBLE -DUNITY_DOUBLE_PRECISION=1e-12f -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g -O1  -Iexternal/unity/src -I$(INCLUDE_DIR) $(shell pkg-config --cflags gtk+-3.0)
@@ -23,6 +24,12 @@ setup:
 
 $(TARGET): $(OBJ_MAIN)
 	gcc $(OBJ_MAIN) -o $(TARGET) $(LFLAGS)
+
+$(UI_RESOURCE_SRC): ui.glade ui.gresource.xml mk_build_dir
+	glib-compile-resources --generate-source --target=$@ --sourcedir=. ui.gresource.xml
+
+$(BUILD_DIR)/ui_resources.o: $(UI_RESOURCE_SRC)
+	gcc $(CFLAGS) -Wno-overlength-strings -c $< -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/%.h mk_build_dir
 	gcc $(CFLAGS) -c $< -o $@
