@@ -112,7 +112,6 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
             }
             else{
                 j--;
-                i--;
                 token* t = token_empty();
                 t->type = REPLACE;
                 t->data.token_referenced = src_tokens->tokens[j];

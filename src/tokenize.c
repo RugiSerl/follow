@@ -207,7 +207,8 @@ void token_to_string(token *t, char* dest) {
             sprintf(dest, "[INSERT:%s]", buf);
             break;
         case REPLACE:
-            sprintf(dest, "[REPLACE]");
+            token_to_string(t->data.token_referenced, buf);
+            sprintf(dest, "[REPLACE:%s]",buf);
             break;
         case EMPTY:
             sprintf(dest, "[EMPTY]");
