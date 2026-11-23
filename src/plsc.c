@@ -46,7 +46,7 @@ void int_matrix_display(int_matrix *matrix) {
     }
 }
 
-void plsc_aux(int_matrix* matrix, token_list* ref_tokens, token_list* src_tokens, int i, int j) {
+void plsc_aux(int_matrix* matrix, token_list* ref_tokens, token_list* src_tokens, size_t i, size_t j) {
     if (i == 0 || j == 0) return;
     if (matrix->data[i][j] == -1) {
         if (token_equals(ref_tokens->tokens[i-1], src_tokens->tokens[j-1])) {
@@ -62,8 +62,8 @@ void plsc_aux(int_matrix* matrix, token_list* ref_tokens, token_list* src_tokens
 
 int_matrix* plsc_lengths(token_list* ref_tokens, token_list* src_tokens) {
     int_matrix* res = int_matrix_create(ref_tokens->length+1, src_tokens->length+1);
-    for (int i = 0; i<res->m; i++) {
-        for (int j = 0; j<res->n; j++) {
+    for (size_t i = 0; i<res->m; i++) {
+        for (size_t j = 0; j<res->n; j++) {
             if (i == 0 || j == 0) {
                 res->data[i][j] = 0;
             } else {
@@ -72,8 +72,8 @@ int_matrix* plsc_lengths(token_list* ref_tokens, token_list* src_tokens) {
         }
     }
 
-    for (int i = 1; i<res->m; i++) {
-        for (int j = 1; j<res->n; j++) {
+    for (size_t i = 1; i<res->m; i++) {
+        for (size_t j = 1; j<res->n; j++) {
             if (res->data[i][j] == -1) {
                 plsc_aux(res, ref_tokens, src_tokens, i, j);
             }
@@ -87,8 +87,8 @@ int_matrix* plsc_lengths(token_list* ref_tokens, token_list* src_tokens) {
 token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
     int_matrix* m = plsc_lengths(ref_tokens, src_tokens);
     token_list* res = token_list_create(m->data[m->m-1][m->n-1]);
-    int i = m->m-1;
-    int j = m->n-1;
+    size_t i = m->m-1;
+    size_t j = m->n-1;
     while (i > 0 && j > 0) {
         if (token_equals(ref_tokens->tokens[i-1], src_tokens->tokens[j-1])) {
             // Attention on ajoute à la fin alors qu'on devrait faire au début.
@@ -134,7 +134,7 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
     }
 
     // On renverse la liste des tokens :
-    for (int i = 0; i<res->length/2; i++) {
+    for ( i = 0; i<res->length/2; i++) {
         token* temp = res->tokens[i];
         res->tokens[i] = res->tokens[res->length-1-i];
         res->tokens[res->length-1-i] = temp;

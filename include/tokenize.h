@@ -57,7 +57,7 @@ void tokenize_text(char* text, strhash* stockage, token_list* res);
 /**
  * Alloue une liste de tokens.
  */
-token_list* token_list_create(size_t length);
+token_list* token_list_create(int length);
 
 /**
  * Libère les données d'une liste de tokens.

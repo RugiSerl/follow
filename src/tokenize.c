@@ -53,10 +53,10 @@ char* openfile(char* src){
 }
 
 
-token_list* token_list_create(size_t capacity) {
+token_list* token_list_create(int capacity) {
     token_list* res = (token_list*)malloc(sizeof(token_list));
     res->length = 0;
-    res->capacity = capacity;
+    res->capacity = (size_t) capacity;
     res->tokens = (token**)malloc(sizeof(token*) * capacity);
     for (int i = 0; i<capacity; i++) {
         res->tokens[i] = NULL;

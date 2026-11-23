@@ -116,20 +116,21 @@ s_node * list_orderedAppend(s_node ** head, int(*compare)(s_node *,void *),void 
 char *  list_to_string (s_node * head, int (*node_to_string)(s_node * node, char * buffer, int buffer_size))  {
 	static char list_as_a_string[LIST_AS_A_STRING_MAX_SIZE];
 	static char buffer[NODE_AS_A_STRING_MAX_SIZE];
-	int length = 0;
+	size_t length = 0;
 
-	int max_length = LIST_AS_A_STRING_MAX_SIZE - 5;
+	size_t max_length = LIST_AS_A_STRING_MAX_SIZE - 5;
 		// 5 : reserve pour la fin de chaine (null ou ...)
 
 	while( head && length<max_length-1 ) {
-		int append;
+		size_t append;
 	 	(void)(*node_to_string)(head, buffer, NODE_AS_A_STRING_MAX_SIZE-1);
 
-		append = snprintf( list_as_a_string+length, max_length - length, "%s", buffer);
+        //size_t pour les warning
+		append = (size_t) snprintf( list_as_a_string+length, max_length - length, "%s", buffer);
 		if ( append >= max_length-length )  length = max_length-1;
 		else			                    length += append;
 
-		append = snprintf( list_as_a_string+length ,
+		append = (size_t) snprintf( list_as_a_string+length ,
 			            max_length - length, " -> ");
 		if ( append >= max_length-length ) length = max_length-1;
 		else			           length += append;

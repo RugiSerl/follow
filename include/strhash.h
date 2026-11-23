@@ -20,10 +20,6 @@ typedef struct {
 #define MIN(x,y) ((x)<(y))?(x):(y)
 #define MAX(x,y) ((x)>(y))?(x):(y)
 
-/**
- * Génère un hash à partir d'une chaîne de caractères en utilisant un algorithme basique.
- */
-static unsigned int _hash_key(char* str);
 
 /**
  * Fonction de comparaison pour les chaînes de caractères.
