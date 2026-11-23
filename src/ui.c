@@ -136,6 +136,7 @@ void ui_execute_diff(GtkButton *button, gpointer user_data) {
     GtkTextBuffer *buffer3 = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview3));
     display_diff(buffer3, list_diff);
 
+    (void) button; //pour enlever le warning unused
     token_list_free(list_diff);
     token_list_free(ref_tokens);
     token_list_free(src_tokens);
