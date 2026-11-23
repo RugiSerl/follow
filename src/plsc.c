@@ -106,9 +106,9 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
                 token* t = token_empty();
                 t->type = REPLACE;
                 t->data.token_referenced = src_tokens->tokens[j];
-                token_list_add(res, t);
-
-
+                if (!token_list_add(res, t)) {
+                    return NULL;
+                }
             } else if(m->data[i][j-1] > m->data[i-1][j]){
                 j--;
                 token* t = token_empty();
@@ -123,7 +123,9 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
                 token* t = token_empty();
                 t->data.token_referenced = ref_tokens->tokens[i];
                 t->type = ERASE;
-                token_list_add(res, t);
+                if (!token_list_add(res, t)) {
+                    return NULL;
+                }
             }
         }
     }
