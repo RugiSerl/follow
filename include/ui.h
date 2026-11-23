@@ -43,3 +43,6 @@ void load_ref(GtkButton *button, gpointer user_data);
 
 // Fonction de callback quand le bouton loadsrc est cliqué.
 void load_src(GtkButton *button, gpointer user_data);
+
+// Fonction de callback quand le bouton À propos est cliqué.
+void open_apropos(GtkButton *button, gpointer user_data);

@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "glib-object.h"
 #include "glib.h"
 #include "gtk/gtk.h"
 #include "plsc.h"
@@ -116,7 +117,9 @@ int ui_run(int argc, char *argv[]) {
     GtkWidget *execute_button = GTK_WIDGET(gtk_builder_get_object(builder, "execute"));
     GtkWidget *loadref_button = GTK_WIDGET(gtk_builder_get_object(builder, "loadref"));
     GtkWidget *loadsrc_button = GTK_WIDGET(gtk_builder_get_object(builder, "loadsrc"));
+    GtkWidget *apropos_button = GTK_WIDGET(gtk_builder_get_object(builder, "apropos"));
     GtkWidget *quit_button = GTK_WIDGET(gtk_builder_get_object(builder, "quit"));
+    GtkWindow *apropos_window = GTK_WINDOW(gtk_builder_get_object(builder, "apropos_win"));
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
     ui_state* state = ui_state_new(builder, GTK_WINDOW(window));
 
@@ -125,6 +128,7 @@ int ui_run(int argc, char *argv[]) {
     g_signal_connect(quit_button, "activate", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(loadref_button, "activate", G_CALLBACK(load_ref), state);
     g_signal_connect(loadsrc_button, "activate", G_CALLBACK(load_src), state);
+    g_signal_connect(apropos_button, "activate", G_CALLBACK(open_apropos), window);
 
     gtk_widget_show_all(window);
     g_object_unref(builder);
@@ -210,4 +214,17 @@ void load_src(GtkButton *button, gpointer user_data) {
 
     g_free(filename);
     free(src);
+}
+
+void open_apropos(GtkButton *button, gpointer parent) {
+    const gchar *authors[] = { "Votre Nom", NULL };
+    gtk_show_about_dialog(
+        GTK_WINDOW(parent),
+        "program-name", "Mon Application",
+        "version", "1.0.0",
+        "comments", "Une petite application en C avec GTK 3.",
+        "authors", authors,
+        "license-type", GTK_LICENSE_MIT_X11,
+        NULL
+    );
 }
