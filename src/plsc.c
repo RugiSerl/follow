@@ -97,12 +97,15 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
             i--;
             j--;
         } else {
-            if (m->data[i-1][j] > m->data[i][j-1]) {
+            if (m->data[i-1][j] == m->data[i][j-1]) {
+                j--;
                 i--;
                 token* t = token_empty();
-                t->data.token_referenced = ref_tokens->tokens[i];
-                t->type = ERASE;
+                t->type = REPLACE;
+                t->data.token_referenced = src_tokens->tokens[j];
                 token_list_add(res, t);
+
+
             } else if(m->data[i][j-1] > m->data[i-1][j]){
                 j--;
                 token* t = token_empty();
@@ -111,10 +114,10 @@ token_list* diff(token_list* ref_tokens, token_list* src_tokens) {
                 token_list_add(res, t);
             }
             else{
-                j--;
+                i--;
                 token* t = token_empty();
-                t->type = REPLACE;
-                t->data.token_referenced = src_tokens->tokens[j];
+                t->data.token_referenced = ref_tokens->tokens[i];
+                t->type = ERASE;
                 token_list_add(res, t);
             }
         }

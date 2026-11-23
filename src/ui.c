@@ -198,8 +198,9 @@ void load_ref(GtkButton *button, gpointer user_data) {
     char* ref = openfile(filename);
 
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview1));
-    gtk_text_buffer_set_text(buffer, ref, strlen(ref));
+    gtk_text_buffer_set_text(buffer, ref, (gint) strlen(ref));
 
+    (void) button; //pour enlever le warning unused 
     g_free(filename);
     free(ref);
 }
@@ -211,8 +212,9 @@ void load_src(GtkButton *button, gpointer user_data) {
     char* src = openfile(filename);
 
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview2));
-    gtk_text_buffer_set_text(buffer, src, strlen(src));
+    gtk_text_buffer_set_text(buffer, src, (gint) strlen(src));
 
+    (void) button; //encore pour enlever le warning unused 
     g_free(filename);
     free(src);
 }
@@ -228,4 +230,5 @@ void open_apropos(GtkButton *button, gpointer parent) {
         "license-type", GTK_LICENSE_MIT_X11,
         NULL
     );
+    (void) button;  //toujours pour enlever le warning unused 
 }

@@ -27,7 +27,7 @@ void diff_test() {
 
     char buf[1000];
     token_list_to_string(list, buf);
-    TEST_ASSERT_EQUAL_STRING("[ERASE:un][REPLACE:ceci] [ERASE:super][REPLACE:n'est][REPLACE: ][REPLACE:pas][REPLACE: ][REPLACE:un] texte génial,[ERASE: ][ERASE:au] [ERASE:revoir.][REPLACE:salut.]\n", buf);
+    TEST_ASSERT_EQUAL_STRING("[INSERT:ceci][INSERT: ][INSERT:n'est][INSERT: ][REPLACE:pas] [REPLACE:un] texte génial,[ERASE: ][ERASE:au] [REPLACE:salut.]\n", buf);
 
     token_list_free(list);
     text_analysis_free(t);
@@ -44,7 +44,7 @@ void diff_test() {
     token_list* list_diff = diff(ref_tokens, src_tokens);
 
     token_list_to_string(list_diff, buf);
-    TEST_ASSERT_EQUAL_STRING("[ERASE:Coucou][REPLACE:Salut] ça[ERASE: ][ERASE:va] [ERASE:?][REPLACE:va.]", buf);
+    TEST_ASSERT_EQUAL_STRING("[REPLACE:Salut] ça[ERASE: ][ERASE:va] [REPLACE:va.]", buf);
 
     token_list_free(list_diff);
     token_list_free(ref_tokens);
