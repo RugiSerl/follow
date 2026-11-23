@@ -11,13 +11,13 @@
 void create_diff_tags(GtkTextBuffer *buffer) {
     // Texte supprimé
     gtk_text_buffer_create_tag(buffer, "diff-erase",
-        "background",    "#ffffff",
+        "background",    "#f8d7da",
         "foreground",    "#e90c1e",
         "strikethrough", TRUE,
         NULL);
     // Texte ajouté
     gtk_text_buffer_create_tag(buffer, "diff-insert",
-        "background", "#ffffff",
+        "background", "#d1e7dd",
         "foreground", "#0aee84",
         "underline",  FALSE,
         NULL);
