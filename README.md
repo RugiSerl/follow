@@ -47,6 +47,29 @@ make
 
 Cela va compiler et exécuter le programme.
 
+### Compilation pour Windows (cross-compilation)
+
+Sur Fedora, installez le toolchain croisé et GTK 3 pour Windows :
+
+```shell
+sudo dnf install mingw64-gcc mingw64-gtk3 pkgconf-pkg-config
+```
+
+Compilez ensuite l'application :
+
+```shell
+make windows
+```
+
+L'exécutable est produit dans `bin/windows/follow.exe`. Pour obtenir un dossier
+prêt à être utilisé sur Windows (exécutable + DLL GTK/GLib) :
+
+```shell
+make windows-dist
+```
+
+Le contenu de `bin/windows-dist` est alors à copier sur la machine Windows.
+
 ### Tests
 
 Pour lancer le jeu de test, faites :
