@@ -119,7 +119,6 @@ int ui_run(int argc, char *argv[]) {
     GtkWidget *loadsrc_button = GTK_WIDGET(gtk_builder_get_object(builder, "loadsrc"));
     GtkWidget *apropos_button = GTK_WIDGET(gtk_builder_get_object(builder, "apropos"));
     GtkWidget *quit_button = GTK_WIDGET(gtk_builder_get_object(builder, "quit"));
-    GtkWindow *apropos_window = GTK_WINDOW(gtk_builder_get_object(builder, "apropos_win"));
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
     ui_state* state = ui_state_new(builder, GTK_WINDOW(window));
 
@@ -195,6 +194,7 @@ char* open_file_dialog(GtkWindow* window) {
 void load_ref(GtkButton *button, gpointer user_data) {
     ui_state *widgets = (ui_state *)user_data;
     char* filename = open_file_dialog(widgets->window);
+    if (filename == NULL) return;
     char* ref = openfile(filename);
 
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview1));
@@ -207,6 +207,7 @@ void load_ref(GtkButton *button, gpointer user_data) {
 void load_src(GtkButton *button, gpointer user_data) {
     ui_state *widgets = (ui_state *)user_data;
     char* filename = open_file_dialog(widgets->window);
+    if (filename == NULL) return;
     char* src = openfile(filename);
 
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->textview2));
