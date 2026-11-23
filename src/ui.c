@@ -66,6 +66,8 @@ void display_diff(GtkTextBuffer *buffer, token_list *diff) {
             gtk_text_buffer_insert_with_tags_by_name(buffer, &end, text, -1, "diff-erase", NULL);
         } else if (t->type == INSERT) {
             gtk_text_buffer_insert_with_tags_by_name(buffer, &end, text, -1, "diff-insert", NULL);
+        } else if (t->type == REPLACE) {
+            gtk_text_buffer_insert_with_tags_by_name(buffer, &end, text, -1, "diff-replace", NULL);
         } else {
             gtk_text_buffer_insert(buffer, &end, text, -1);
         }
